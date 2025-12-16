@@ -14,17 +14,14 @@ export async function PATCH(req: Request) {
     const { userId, username, role, password } = body;
 
     if (!userId) {
-      return NextResponse.json(
-        { message: "User ID is required" },
-        { status: 400 }
-      );
+      return NextResponse.json({ message: "User ID is required" }, { status: 400 });
     }
 
     const updateData: UpdateData = {};
 
     if (username) updateData.username = username;
     if (role) updateData.role = role;
-    if (password && password.length > 0) {
+    if (password) {
       const saltRounds = 10;
       updateData.passwordHash = await bcrypt.hash(password, saltRounds);
     }
@@ -37,9 +34,6 @@ export async function PATCH(req: Request) {
     return NextResponse.json({ success: true, admin: updatedAdmin });
   } catch (error) {
     console.error(error);
-    return NextResponse.json(
-      { message: "Failed to update admin" },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: "Failed to update admin" }, { status: 500 });
   }
 }
