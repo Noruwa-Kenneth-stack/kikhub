@@ -1,6 +1,5 @@
-// pages/api/admin/update.ts
-import type { NextApiRequest, NextApiResponse } from "next";
-import prisma from "@/lib/prisma"; 
+import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 
 interface UpdateData {
@@ -9,18 +8,16 @@ interface UpdateData {
   passwordHash?: string;
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== "PATCH") {
-    return res.status(405).json({ message: "Method not allowed" });
-  }
-
+export async function PATCH(req: Request) {
   try {
-    // You should get userId from session/auth middleware
-    const userId = req.body.userId;
-    const { userName, role, password } = req.body;
+    const body = await req.json();
+    const { userId, userName, role, password } = body;
 
     if (!userId) {
-      return res.status(400).json({ message: "User ID is required" });
+      return NextResponse.json(
+        { message: "User ID is required" },
+        { status: 400 }
+      );
     }
 
     const updateData: UpdateData = {
@@ -28,11 +25,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       role,
     };
 
-    // Hash password if it is provided
     if (password && password.length > 0) {
       const saltRounds = 10;
-      const hashedPassword = await bcrypt.hash(password, saltRounds);
-      updateData.passwordHash = hashedPassword;
+      updateData.passwordHash = await bcrypt.hash(password, saltRounds);
     }
 
     const updatedAdmin = await prisma.admin.update({
@@ -40,9 +35,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       data: updateData,
     });
 
-    res.status(200).json({ success: true, admin: updatedAdmin });
+    return NextResponse.json(
+      { success: true, admin: updatedAdmin },
+      { status: 200 }
+    );
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Failed to update admin" });
+    return NextResponse.json(
+      { message: "Failed to update admin" },
+      { status: 500 }
+    );
   }
 }
