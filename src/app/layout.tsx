@@ -1,23 +1,28 @@
 import type { Metadata } from "next";
-import { Inter, Roboto_Mono } from "next/font/google";
 import "@fontsource/inter/400.css";
 import "@fontsource/inter/700.css"; 
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "next-themes";
+import localFont from 'next/font/local';
 
-// Google Fonts
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  weight: ["400", "700"],
+const inter = localFont({
+  src: [
+    { path: '../public/fonts/Inter-Regular.woff2', weight: '400' },
+    { path: '../public/fonts/Inter-Bold.woff2', weight: '700' },
+  ],
+  variable: '--font-inter',
 });
 
-const robotoMono = Roboto_Mono({
-  variable: "--font-roboto-mono",
-  subsets: ["latin"],
+const robotoMono = localFont({
+  src: [
+    { path: '../public/fonts/RobotoMono-Regular.woff2', weight: '400' },
+    { path: '../public/fonts/RobotoMono-Bold.woff2', weight: '700' },
+  ],
+  variable: '--font-roboto-mono',
 });
+
 
 export const metadata: Metadata = {
   title: "Amin Dashboard - KIKHUB",
