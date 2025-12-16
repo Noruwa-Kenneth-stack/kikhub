@@ -5,35 +5,41 @@ import bcrypt from "bcryptjs";
 interface UpdateData {
   username?: string;
   passwordHash?: string;
-  // Add other profile fields as needed
+  role?: string;
 }
 
 export async function PATCH(req: Request) {
   try {
     const body = await req.json();
-    const { userId, username, password } = body;
+    const { userId, username, role, password } = body;
 
     if (!userId) {
-      return NextResponse.json({ message: "User ID is required" }, { status: 400 });
+      return NextResponse.json(
+        { message: "User ID is required" },
+        { status: 400 }
+      );
     }
 
     const updateData: UpdateData = {};
 
     if (username) updateData.username = username;
-
+    if (role) updateData.role = role;
     if (password && password.length > 0) {
       const saltRounds = 10;
       updateData.passwordHash = await bcrypt.hash(password, saltRounds);
     }
 
-    const updatedProfile = await prisma.profile.update({
+    const updatedAdmin = await prisma.admin.update({
       where: { id: Number(userId) },
       data: updateData,
     });
 
-    return NextResponse.json({ success: true, profile: updatedProfile }, { status: 200 });
+    return NextResponse.json({ success: true, admin: updatedAdmin });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ message: "Failed to update profile" }, { status: 500 });
+    return NextResponse.json(
+      { message: "Failed to update admin" },
+      { status: 500 }
+    );
   }
 }
