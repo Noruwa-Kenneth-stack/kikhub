@@ -1,15 +1,86 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --primary: 221 83% 59%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 137 72% 49%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --accent: 262 83% 58%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --muted: 220 14% 96%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 221 83% 59%;
+  --radius: 1rem;
+
+  --sidebar-background: 0 0% 98%;
+  --sidebar-foreground: 240 5.3% 26.1%;
+  --sidebar-primary: 221 83% 53%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 240 3.7% 15.9%;
+  --sidebar-accent-foreground: 240 5.9% 10%;
+  --sidebar-border: 220 13% 91%;
+  --sidebar-ring: 217.2 91.2% 59.8%;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.dark {
+  --background: 222.2 47.4% 11.2%;
+  --foreground: 210 40% 98%;
+  --sidebar-background: 0 60% 98%;
+  --sidebar-foreground: 240 5.3% 26.1%;
+
+  --card: 217.2 32.6% 17.5%;
+  --card-foreground: 210 40% 98%;
+
+  --popover: 217.2 32.6% 17.5%;
+  --popover-foreground: 210 40% 98%;
+
+  --primary: 221 83% 53%;
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+
+  --accent: 221 83% 53%;
+  --accent-foreground: 0 0% 100%;
+
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 221 83% 53%;
+
+  --success: 142 76% 36%;
+  --success-foreground: 0 0% 100%;
+
+  --sidebar-background: 0 60% 98%;
+
+  --sidebar-foreground: 240 5.3% 26.1%;
+
+  --sidebar-primary: 240 5.9% 10%;
+
+  --sidebar-primary-foreground: 0 0% 98%;
+
+  --sidebar-accent: 240 4.8% 95.9%;
+
+  --sidebar-accent-foreground: 240 5.9% 10%;
+
+  --sidebar-border: 220 13% 91%;
+
+  --sidebar-ring: 217.2 91.2% 59.8%;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -20,7 +91,149 @@
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Optional: border + bg sync like the old @apply */
+* {
+  border-color: hsl(var(--border));
+}
+
+.bg-background {
+  background-color: hsl(var(--background));
+}
+.bg-sidebar {
+  background-color: hsl(var(--sidebar-background));
+}
+.text-sidebar-foreground {
+  color: hsl(var(--sidebar-foreground));
+}
+.bg-sidebar-primary {
+  background-color: hsl(var(--sidebar-primary));
+}
+.text-sidebar-primary-foreground {
+  color: hsl(var(--sidebar-primary-foreground));
+}
+.bg-sidebar-accent {
+  background-color: hsl(var(--sidebar-accent));
+}
+.text-sidebar-accent-foreground {
+  color: hsl(var(--sidebar-accent-foreground));
+}
+.border-sidebar {
+  border-color: hsl(var(--sidebar-border));
+}
+.bg-sidebar-border {
+  border-color: hsl(var(--sidebar-border));
+}
+.ring-sidebar {
+  --tw-ring-color: hsl(var(--sidebar-ring));
+}
+.bg-muted {
+  background-color: hsl(var(--muted));
+}
+.text-muted-foreground {
+  color: hsl(var(--muted-foreground));
+}
+.bg-card {
+  background-color: hsl(var(--card));
+}
+.text-card-foreground {
+  color: hsl(var(--card-foreground));
+}
+.bg-popover {
+  background-color: hsl(var(--popover));
+}
+.text-popover-foreground {
+  color: hsl(var(--popover-foreground));
+}
+.bg-primary {
+  background-color: hsl(var(--primary));
+}
+.text-primary-foreground {
+  color: hsl(var(--primary-foreground));
+}
+.bg-secondary {
+  background-color: hsl(var(--secondary));
+}
+.text-secondary-foreground {
+  color: hsl(var(--secondary-foreground));
+}
+.bg-accent {
+  background-color: hsl(var(--accent));
+}
+.text-accent-foreground {
+  color: hsl(var(--accent-foreground));
+}
+.bg-destructive {
+  background-color: hsl(var(--destructive));
+}
+.text-destructive-foreground {
+  color: hsl(var(--destructive-foreground));
+}
+.border {
+  border-color: hsl(var(--border));
+}
+.ring {
+  --tw-ring-color: hsl(var(--ring));
+}
+.radius {
+  border-radius: var(--radius);
+}
+.input {
+  background-color: hsl(var(--input));
+}
+.success {
+  background-color: hsl(var(--success));
+}
+.text-success-foreground {
+  color: hsl(var(--success-foreground));
+}
+.text-primary {
+  color: hsl(var(--primary));
+}
+
+/* Container fallback since Tailwind config isn't applying */
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+/* Breakpoints matching Tailwind's defaults */
+/* @media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+
+} */
+
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1400px;
+  }
 }
