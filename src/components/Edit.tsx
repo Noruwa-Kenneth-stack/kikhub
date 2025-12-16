@@ -49,46 +49,13 @@ const generalSettingsSchema = z.object({
   refreshInterval: z.number().optional(),
 });
 
-const profileSettingsSchema = z
-  .object({
-    userName: z.string().min(1, "Username is required"),
 
-    password: z
-      .string()
-      .min(8, "Password must be at least 8 characters")
-      .optional()
-      .or(z.literal("")),
-
-    confirmPassword: z.string().optional().or(z.literal("")),
-
-    role: z.enum(["admin", "editor", "viewer"]).optional(),
-  })
-  .refine((data) => !data.password || data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
 
 type GeneralSettings = z.infer<typeof generalSettingsSchema>;
-type ProfileSettings = z.infer<typeof profileSettingsSchema>;
 
 export default function Edit() {
   const [isSaving, setIsSaving] = useState(false);
   const { setTheme } = useTheme();
-
-  // Decode JWT to check if user is admin
-  const getIsAdmin = (): boolean => {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) return false;
-      const payload = JSON.parse(atob(token.split(".")[1]));
-      return payload.role === "admin";
-    } catch (e) {
-      console.error("Failed to decode token", e);
-      return false;
-    }
-  };
-
-  const isAdmin = getIsAdmin();
 
   // Load saved settings on mount
   const loadSavedSettings = (): GeneralSettings => {
@@ -126,15 +93,6 @@ export default function Edit() {
     defaultValues: loadSavedSettings(),
   });
 
-  const profileForm = useForm<ProfileSettings>({
-    resolver: zodResolver(profileSettingsSchema),
-    defaultValues: {
-      userName: "",
-      password: "",
-      confirmPassword: "",
-      role: "admin",
-    },
-  });
 
   useAutoSave(
     generalForm.watch(), // watch all general form fields
@@ -162,62 +120,6 @@ export default function Edit() {
       toast({
         title: "Error",
         description: "Failed to save settings.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  const onProfileSubmit = async (values: ProfileSettings) => {
-    setIsSaving(true);
-
-    try {
-      // Get current user info from JWT in localStorage
-      const token = localStorage.getItem("token");
-      if (!token) throw new Error("User not authenticated");
-
-      const payload = JSON.parse(atob(token.split(".")[1])); // decode JWT
-      const currentUserId = payload.id;
-
-      // Build payload for API
-      const payloadData = {
-        userId: currentUserId,
-        userName: values.userName,
-        role: values.role,
-        ...(values.password ? { password: values.password } : {}),
-      };
-
-      // Call your PATCH API
-      const res = await fetch("/api/admin/update", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payloadData),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) throw new Error(data.message || "Failed to update profile");
-
-      toast({
-        title: "Success!",
-        description: "Profile updated successfully",
-      });
-
-      // Optionally: update localStorage for client-side use
-      localStorage.setItem(
-        "profile",
-        JSON.stringify({ ...payloadData, password: undefined })
-      );
-    } catch (error: Error | unknown) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Failed to update profile";
-      console.error(error);
-      toast({
-        title: "Error",
-        description: errorMessage,
         variant: "destructive",
       });
     } finally {
@@ -511,127 +413,7 @@ export default function Edit() {
                 </Card>
               </TabsContent>
 
-              <TabsContent value="profile">
-                <Card className="p-6">
-                  <div className="space-y-6">
-                    <div>
-                      <h2 className="text-lg font-semibold text-foreground">
-                        Profile Settings
-                      </h2>
-                      <p className="text-sm text-muted-foreground">
-                        Manage your account information
-                      </p>
-                    </div>
-                    <Separator />
-
-                    <Form {...profileForm}>
-                      <form
-                        onSubmit={profileForm.handleSubmit(onProfileSubmit)}
-                        className="space-y-6"
-                      >
-                        <FormField
-                          control={profileForm.control}
-                          name="userName"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>User Name</FormLabel>
-                              <FormControl>
-                                <Input
-                                  placeholder="Enter your username"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-
-                        <FormField
-                          control={profileForm.control}
-                          name="password"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>New Password</FormLabel>
-                              <FormControl>
-                                <Input
-                                  type="password"
-                                  placeholder="Enter new password"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormDescription>
-                                Leave blank if you do not want to change
-                                password
-                              </FormDescription>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-
-                        <FormField
-                          control={profileForm.control}
-                          name="confirmPassword"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Confirm Password</FormLabel>
-                              <FormControl>
-                                <Input
-                                  type="password"
-                                  placeholder="Confirm new password"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-
-                        {isAdmin && (
-                          <FormField
-                            control={profileForm.control}
-                            name="role"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Role</FormLabel>
-                                <Select
-                                  value={field.value}
-                                  onValueChange={field.onChange}
-                                >
-                                  <FormControl>
-                                    <SelectTrigger>
-                                      <SelectValue />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent>
-                                    <SelectItem value="admin">Admin</SelectItem>
-                                    <SelectItem value="editor">
-                                      Editor
-                                    </SelectItem>
-                                    <SelectItem value="viewer">
-                                      Viewer
-                                    </SelectItem>
-                                  </SelectContent>
-                                </Select>
-                                <FormDescription>
-                                  Access level (admin only)
-                                </FormDescription>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        )}
-
-                        <div className="flex justify-end">
-                          <Button type="submit" disabled={isSaving}>
-                            {isSaving ? "Updating..." : "Update Profile"}
-                          </Button>
-                        </div>
-                      </form>
-                    </Form>
-                  </div>
-                </Card>
-              </TabsContent>
-
+              
               <TabsContent value="content">
                 <Card className="p-6">
                   {contentSection === "main" && (
