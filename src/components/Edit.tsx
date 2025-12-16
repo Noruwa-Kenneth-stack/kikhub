@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "@/hooks/use-toast";
-import { User, Globe, Database } from "lucide-react";
+import { Globe, Database } from "lucide-react";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import StoreTable from "@/components/StoreTable";
@@ -144,10 +144,6 @@ export default function Edit() {
                 <TabsTrigger value="general" className="gap-2">
                   <Globe className="h-4 w-4 text-blue-700" />
                   <span className="hidden sm:inline">General</span>
-                </TabsTrigger>
-                <TabsTrigger value="profile" className="gap-2">
-                  <User className="h-4 w-4 text-blue-700" />
-                  <span className="hidden sm:inline">Profile</span>
                 </TabsTrigger>
                 <TabsTrigger value="content" className="gap-2">
                   <Database className="h-4 w-4 text-blue-700" />
