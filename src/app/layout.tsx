@@ -9,16 +9,16 @@ import localFont from 'next/font/local';
 
 const inter = localFont({
   src: [
-    { path: '../public/fonts/Inter-Regular.woff2', weight: '400' },
-    { path: '../public/fonts/Inter-Bold.woff2', weight: '700' },
+    { path: '../fonts/Inter-Regular.woff2', weight: '400' },
+    { path: '../fonts/Inter-Bold.woff2', weight: '700' },
   ],
   variable: '--font-inter',
 });
 
 const robotoMono = localFont({
   src: [
-    { path: '../public/fonts/RobotoMono-Regular.woff2', weight: '400' },
-    { path: '../public/fonts/RobotoMono-Bold.woff2', weight: '700' },
+    { path: '../fonts/RobotoMono-Regular.woff2', weight: '400' },
+    { path: '../fonts/RobotoMono-Bold.woff2', weight: '700' },
   ],
   variable: '--font-roboto-mono',
 });
