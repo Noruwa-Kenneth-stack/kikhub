@@ -16,7 +16,7 @@ export function ResizableColumn({
   minWidth = 80,
   children,
   onResize,
-}: ResizableColumnProps) {
+}: ResizableColumnProps) {     
   return (
     <ResizableBox
       width={width}

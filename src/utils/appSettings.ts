@@ -5,6 +5,6 @@ export function getAppSettings() {
     const saved = localStorage.getItem("appSettings");
     return saved ? JSON.parse(saved) : null;
   } catch {
-    return null;
+    return null;  
   }
 }

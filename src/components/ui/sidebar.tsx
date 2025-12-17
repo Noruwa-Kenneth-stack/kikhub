@@ -606,7 +606,7 @@ const SidebarMenuSubButton = React.forwardRef<
         "group-data-[collapsible=icon]:hidden",
         className,
       )}
-      {...props}
+      {...props}   
     />
   );
 });

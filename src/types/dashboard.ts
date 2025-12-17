@@ -6,4 +6,4 @@ export type Tab =
   | "product-ads"
   | "product-banner"
   | "item-list"
-  | "settings";
+  | "settings";   

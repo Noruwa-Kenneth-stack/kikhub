@@ -17,7 +17,7 @@ const TabsList = React.forwardRef<
       className
     )}
     {...props}
-  />
+  />   
 ))
 TabsList.displayName = TabsPrimitive.List.displayName
 

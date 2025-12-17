@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
 
     const isValid = await bcrypt.compare(password, admin.passwordHash);
     if (!isValid) {
-      return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
+      return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });     
     }
 
     const token = generateJWT({ id: admin.id, username: admin.username, role: admin.role });

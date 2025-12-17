@@ -15,7 +15,7 @@ export interface FlyerProduct {
   weight: string[] | null;
   image_thumbnails: string[] | null;
 
-  compare_key: string | null;
+  compare_key: string | null;    
 
   category: string | null;
   subcategory: string | null;

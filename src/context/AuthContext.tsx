@@ -10,7 +10,7 @@ interface User {
   role: "admin";
 }
 
-interface AuthContextType {
+interface AuthContextType {    
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;

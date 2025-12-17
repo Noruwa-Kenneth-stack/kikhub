@@ -3,7 +3,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-
+ 
 interface SliderProps {
   images: { src: string; alt: string; title?: string; description?: string }[];
   autoPlay?: boolean;

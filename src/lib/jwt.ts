@@ -12,5 +12,5 @@ export const generateJWT = (payload: object, expiresIn: number | string = "1h") 
 };
 
 export const verifyJWT = (token: string) => {
-  return jwt.verify(token, JWT_SECRET);
+  return jwt.verify(token, JWT_SECRET);    
 };

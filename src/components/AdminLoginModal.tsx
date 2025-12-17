@@ -24,7 +24,7 @@ export default function AdminLoginModal({ isOpen, onClose }: Props) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className="bg-white rounded-xl p-8 max-w-md w-full mx-4 shadow-2xl">
-        <button onClick={onClose} className="float-right text-xl text-black">×</button>
+        <button onClick={onClose} className="float-right text-2xl text-black">×</button>
         <h2 className="text-2xl font-bold text-center mb-6 text-blue-600">Admin Login</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">

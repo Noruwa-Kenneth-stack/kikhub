@@ -19,7 +19,7 @@ const Checkbox = React.forwardRef<
       "transition-all duration-200 hover:border-blue-400 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-300",
       // Disabled
       "disabled:cursor-not-allowed disabled:opacity-50",
-      className
+      className  
     )}
     {...props}
   >
