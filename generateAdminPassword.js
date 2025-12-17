@@ -7,3 +7,4 @@ const saltRounds = 10;
 const hash = bcrypt.hashSync(password, saltRounds);
 
 console.log("Hashed password to store in DB:", hash);
+   

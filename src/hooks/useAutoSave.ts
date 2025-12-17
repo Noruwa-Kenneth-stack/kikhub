@@ -6,7 +6,7 @@ export function useAutoSave(
   onSave: () => void
 ) {
   const settings = getAppSettings();
-  const interval = settings?.autosaveInterval;
+  const interval = settings?.autosaveInterval;   
   const timer = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
