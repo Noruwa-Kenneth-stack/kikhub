@@ -57,4 +57,4 @@ export default function AdminLoginModal({ isOpen, onClose }: Props) {
       </div>
     </div>
   );
-}
+}  
