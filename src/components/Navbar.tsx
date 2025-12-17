@@ -42,7 +42,7 @@ export default function Navbar() {
             <div className="flex items-center">
               <Link href="/">
                 <Image
-                  src="/logo/Logo.png"
+                  src="/logo/logo.png"
                   alt="KIKHUB Logo"
                   width={160}
                   height={160}
