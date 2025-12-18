@@ -15,6 +15,7 @@ export async function GET() {
     });
   } catch (error: unknown) {
     console.error("Prisma connection error:", error);
+console.log("DB HOST:", process.env.DATABASE_URL?.split("@")[1]);
 
     return NextResponse.json(
       {
