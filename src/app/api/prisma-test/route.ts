@@ -1,29 +1,28 @@
-import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+// app/api/admin/login/route.ts
+import { NextRequest, NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
+import prisma from "@/lib/prisma";
+import { generateJWT } from "@/lib/jwt";
 
-const prisma = new PrismaClient();
-
-export async function GET() {
+export async function POST(req: NextRequest) {
   try {
-    // Simple DB call
-    const result = await prisma.$queryRaw`SELECT 1`;
+    const { username, password } = await req.json();
 
-    return NextResponse.json({
-      success: true,
-      message: "Prisma connected successfully 🚀",
-      result,
-    });
-  } catch (error: unknown) {
-    console.error("Prisma connection error:", error);
-console.log("DB HOST:", process.env.DATABASE_URL?.split("@")[1]);
+    if (!username || !password) {
+      return NextResponse.json({ error: "Missing credentials" }, { status: 400 });
+    }
 
-    return NextResponse.json(
-      {
-        success: false,
-        message: "Prisma failed to connect ❌",
-        error: error instanceof Error ? error.message : "Unknown error",
-      },
-      { status: 500 }
-    );
+    const admin = await prisma.admin.findUnique({ where: { username } });
+    if (!admin) return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
+
+    const isValid = await bcrypt.compare(password, admin.passwordHash);
+    if (!isValid) return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
+
+    const token = generateJWT({ id: admin.id, username: admin.username, role: admin.role });
+
+    return NextResponse.json({ token, username: admin.username, role: admin.role });
+  } catch (err) {
+    console.error("Login error:", err);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

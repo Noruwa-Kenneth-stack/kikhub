@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
 
     const token = generateJWT({ id: admin.id, username: admin.username, role: admin.role });
     return NextResponse.json({ token, username: admin.username, role: admin.role });
-  } catch (err: any) {
+  } catch (err) {
     console.error("Login error:", err);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
