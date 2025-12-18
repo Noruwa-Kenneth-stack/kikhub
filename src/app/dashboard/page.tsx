@@ -29,7 +29,7 @@ import StoreAds from "@/components/StoreAds";
 import Edit from "@/components/Edit";
 import type { Tab } from "@/types/dashboard";
 import { eventBus } from "@/utils/eventBus";
-import DashboardPageWrapper from "@/components/DashboardPageWrapper";
+// import DashboardPageWrapper from "@/components/DashboardPageWrapper";
 
 // Map of tabs
 const tabConfig: Record<
@@ -94,7 +94,7 @@ export default function DashboardPage() {
   }, [handler]);
 
   return (
-      <DashboardPageWrapper>
+      // <DashboardPageWrapper>
     <SidebarProvider defaultOpen={true}>
       <AppSidebar activeTab={activeTab} onTabChange={setActiveTab} />
 
@@ -121,6 +121,6 @@ export default function DashboardPage() {
         </main>
       </SidebarInset>
     </SidebarProvider>
-    </DashboardPageWrapper>
+    // </DashboardPageWrapper>
   );
 }
