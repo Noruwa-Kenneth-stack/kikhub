@@ -139,7 +139,7 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div className="md:hidden border-t border-gray-200">
+          <div className="md:hidden border-t border-gray-200 text-black ">
             <div className="px-4 py-3 space-y-3">
               <Link
                 href="/"
