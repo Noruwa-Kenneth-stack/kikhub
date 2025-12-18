@@ -33,8 +33,8 @@ export default function AdminLoginModal({ isOpen, onClose }: Props) {
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-200  rounded-lg text-black
-     transition-colors transition-shadow duration-500 ease-in-out"
+            className="w-full px-4 py-2 border-0  rounded-lg text-black
+    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors transition-shadow duration-500 ease-in-out"
             required
           />
           <input
@@ -42,7 +42,7 @@ export default function AdminLoginModal({ isOpen, onClose }: Props) {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-200 rounded-lg text-black
+            className="w-full px-4 py-2 border border border-blue-500 rounded-lg text-black
     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors transition-shadow duration-500 ease-in-out"
             required
           />
