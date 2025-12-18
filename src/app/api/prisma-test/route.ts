@@ -5,22 +5,19 @@ const prisma = new PrismaClient();
 
 export async function GET() {
   try {
-    // Simple DB call
-    const result = await prisma.$queryRaw`SELECT 1`;
+    await prisma.$queryRaw`SELECT 1`;
 
     return NextResponse.json({
       success: true,
       message: "Prisma connected successfully 🚀",
-      result,
     });
-  } catch (error: unknown) {
-    console.error("Prisma connection error:", error);
+  } catch (error: any) {
+    console.error("Prisma error:", error);
 
     return NextResponse.json(
       {
         success: false,
-        message: "Prisma failed to connect ❌",
-        error: error instanceof Error ? error.message : "Unknown error",
+        error: error.message,
       },
       { status: 500 }
     );
