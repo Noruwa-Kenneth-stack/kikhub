@@ -1,28 +1,12 @@
-// app/api/admin/login/route.ts
-import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
+import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { generateJWT } from "@/lib/jwt";
 
-export async function POST(req: NextRequest) {
+export async function GET() {
   try {
-    const { username, password } = await req.json();
-
-    if (!username || !password) {
-      return NextResponse.json({ error: "Missing credentials" }, { status: 400 });
-    }
-
-    const admin = await prisma.admin.findUnique({ where: { username } });
-    if (!admin) return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
-
-    const isValid = await bcrypt.compare(password, admin.passwordHash);
-    if (!isValid) return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
-
-    const token = generateJWT({ id: admin.id, username: admin.username, role: admin.role });
-
-    return NextResponse.json({ token, username: admin.username, role: admin.role });
+    const result = await prisma.$queryRaw`SELECT 1`;
+    return NextResponse.json({ success: true, result });
   } catch (err) {
-    console.error("Login error:", err);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    console.error("Prisma test error:", err);
+    return NextResponse.json({ success: false, error: err }, { status: 500 });
   }
 }
