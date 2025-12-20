@@ -63,7 +63,7 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
       <SidebarHeader className="flex items-center justify-center py-4">
         {open ? (
           <Image
-            src="/Logo/Logo.png"
+            src="/logo/logo.png"
             alt="Logo"
             width={128}
             height={40} 
@@ -72,7 +72,7 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
           />
         ) : (
           <Image
-            src="/Logo/Logo.png"
+            src="/logo/logo.png"
             alt="Logo Icon"
             width={32}
             height={32}
