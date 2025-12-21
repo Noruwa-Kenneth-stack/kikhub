@@ -102,7 +102,7 @@ body {
 }
 
 .bg-background {
-  background-color: hsl(var(--background));
+  background-color: hsl(var(--background, 222.2 47.4% 11.2%));
 }
 .bg-sidebar {
   background-color: hsl(var(--sidebar-background));

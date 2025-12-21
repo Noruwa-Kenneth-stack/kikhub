@@ -106,7 +106,7 @@ export default function DashboardPage() {
               <Icon className="h-5 w-5 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-foreground">
+              <h1 className="text-xl font-bold text-black">
                 {tabConfig[activeTab].title} Management
               </h1>
               <p className="text-sm text-muted-foreground">
