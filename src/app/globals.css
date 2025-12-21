@@ -83,12 +83,13 @@
   --sidebar-ring: 217.2 91.2% 59.8%;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 222.2 47.4% 11.2%;
+    --foreground: 210 40% 98%;
   }
-}
+} */
+
 
 body {
   background: hsl(var(--background));
@@ -102,7 +103,7 @@ body {
 }
 
 .bg-background {
-  background-color: hsl(var(--background, 222.2 47.4% 11.2%));
+  background-color: hsl(var(--background));
 }
 .bg-sidebar {
   background-color: hsl(var(--sidebar-background));
