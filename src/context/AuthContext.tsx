@@ -57,7 +57,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.setItem("adminUser", JSON.stringify(userData));
       setUser(userData);
 
-      toast({ title: "Welcome Admin" });
+      toast({ title: "Welcome Admin", variant: "success" });
       router.push("/dashboard");
     } catch (err: Error | unknown) {
       const errorMessage = err instanceof Error ? err.message : "An unknown error occurred";
