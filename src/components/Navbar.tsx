@@ -80,7 +80,7 @@ export default function Navbar() {
                       size="icon"
                       className="rounded-full cursor-pointer p-0"
                     >
-                      <div className="h-10 w-10 rounded-full bg-blue-900 text-white flex items-center justify-center text-lg font-bold">
+                      <div className="h-10 w-10 rounded-full bg-blue-700 text-white flex items-center justify-center text-lg font-bold">
                         {user?.username?.[0]?.toUpperCase() || "A"}
                       </div>
                     </Button>
