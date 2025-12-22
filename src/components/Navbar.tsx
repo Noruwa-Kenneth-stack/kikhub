@@ -71,7 +71,7 @@ export default function Navbar() {
             </div>
 
             {/* Desktop Auth */}
-            <div className="hidden md:flex items-center">
+            <div className="hidden md:flex items-center text-black">
               {isAuthenticated ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -97,7 +97,7 @@ export default function Navbar() {
                     <DropdownMenuItem asChild>
                       <Link
                         href="/dashboard"
-                        className="flex items-center gap-2 cursor-pointer"
+                        className="flex items-center gap-2 cursor-pointer text-black"
                       >
                         <User className="h-4 w-4" />
                         Dashboard
@@ -170,7 +170,7 @@ export default function Navbar() {
                       <p className="text-sm text-gray-500">{user?.role}</p>
                     </div>
                   </div>
-                  <Button variant="outline" onClick={logout} className="w-full">
+                  <Button variant="outline" onClick={logout} className="w-full text-white">
                     Log out
                   </Button>
                 </div>
