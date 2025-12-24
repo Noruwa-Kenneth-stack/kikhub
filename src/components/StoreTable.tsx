@@ -50,7 +50,7 @@ export default function StoreTable({ itemsPerPage = 10 }: StoreTableProps) {
       setTotalCount(data.total);
     } catch (err) {
       console.error(err);
-      toast({ title: "Error", description: "Failed to load stores" });
+      toast({ title: "Error", description: "Failed to load stores", variant: "destructive" });
     }
   }, [page, search, itemsPerPage]);
 

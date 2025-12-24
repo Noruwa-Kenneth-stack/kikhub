@@ -34,7 +34,8 @@
 
 .dark {
   --background: 222.2 47.4% 11.2%;
-  --foreground: 210 40% 98%;
+  /* --foreground: 222.2 84% 4.9%; */
+
   --sidebar-background: 0 60% 98%;
   --sidebar-foreground: 240 5.3% 26.1%;
 

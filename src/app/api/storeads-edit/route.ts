@@ -17,7 +17,7 @@ const pool = new Pool({
   ssl: {
     rejectUnauthorized: false,
   },
-});
+}); 
 
 // GET — Paginated store ads
 export async function GET(request: Request) {

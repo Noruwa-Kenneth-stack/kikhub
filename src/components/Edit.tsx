@@ -435,7 +435,7 @@ export default function Edit() {
                             variant="outline"
                             size="sm"
                             onClick={() => setContentSection("stores")}
-                            className="bg-white hover:bg-blue-600 hover:text-white transition-colors duration-200"
+                            className="bg-white text-foreground hover:bg-blue-600 hover:text-white transition-colors duration-200"
                           >
                             Manage Stores
                           </Button>
