@@ -1,22 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Pool } from "pg";
-
-// const pool = new Pool({
-//   user: process.env.POSTGRES_USER,
-//   password: process.env.POSTGRES_PASSWORD,
-//   host: process.env.POSTGRES_HOST,
-//   port: Number(process.env.POSTGRES_PORT) || 5432,
-//   database: process.env.POSTGRES_DB,
-// });
+import pkg from "pg";
 
 export const runtime = "nodejs";
 
-const pool = new Pool({
-  connectionString: process.env.FLYERS_DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
+const { Pool } = pkg;
+
+// 👇 singleton pattern
+const globalForPg = global as unknown as { pool?: pkg.Pool };
+
+// 👇 singleton pattern
+const pool =
+  globalForPg.pool ??
+  new Pool({
+    connectionString: process.env.FLYERS_DATABASE_URL,
+    ssl: { rejectUnauthorized: false },
+  });
+
+if (!globalForPg.pool) globalForPg.pool = pool;
 
 export async function POST(req: NextRequest) {
   try {
