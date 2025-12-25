@@ -1211,7 +1211,7 @@ export default function FlyerProducts() {
                       Media
                     </h2>
                     <div className="grid gap-6 md:grid-cols-2">
-                      {["image.jpg", "image_thumbnails.jpg"].map((name) => (
+                      {["image", "image_thumbnails"].map((name) => (
                         <FormField
                           key={name}
                           control={form.control}
