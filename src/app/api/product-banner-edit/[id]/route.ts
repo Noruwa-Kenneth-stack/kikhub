@@ -1,15 +1,22 @@
-import { NextResponse, NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import pkg from "pg";
+
+export const runtime = "nodejs";
+
 const { Pool } = pkg;
 
-const pool = new Pool({
-  user: process.env.POSTGRES_USER,
-  password: process.env.POSTGRES_PASSWORD,
-  host: process.env.POSTGRES_HOST,
-  port: Number(process.env.POSTGRES_PORT) || 5432,
-  database: process.env.POSTGRES_DB,
-});
+// 👇 singleton pattern
+const globalForPg = global as unknown as { pool?: pkg.Pool };
 
+// 👇 singleton pattern
+const pool =
+  globalForPg.pool ??
+  new Pool({
+    connectionString: process.env.FLYERS_DATABASE_URL,
+    ssl: { rejectUnauthorized: false },
+  });
+
+if (!globalForPg.pool) globalForPg.pool = pool;
 // ---------------- PATCH ----------------
 export async function PATCH(
   req: NextRequest,
