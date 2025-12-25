@@ -1211,32 +1211,48 @@ export default function FlyerProducts() {
                       Media
                     </h2>
                     <div className="grid gap-6 md:grid-cols-2">
-                      {["image", "image_thumbnails"].map((name) => (
-                        <FormField
-                          key={name}
-                          control={form.control}
-                          name={name as keyof FormValues}
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>
-                                {name
-                                  .replace(/_/g, " ")
-                                  .replace(/\b\w/g, (c) => c.toUpperCase())}
-                              </FormLabel>
-                              <FormControl>
-                                <Input
-                                  placeholder={`Enter ${name.replace(
-                                    /_/g,
-                                    " "
-                                  )}`}
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      ))}
+                      <FormField
+                        control={form.control}
+                        name="image"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Image</FormLabel>
+                            <FormControl>
+                              <Input placeholder="corn.jpg" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="image_thumbnails"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Image Thumbnails</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="thumb1.jpg, thumb2.jpg"
+                                value={
+                                  Array.isArray(field.value)
+                                    ? field.value.join(", ")
+                                    : ""
+                                }
+                                onChange={(e) =>
+                                  field.onChange(
+                                    e.target.value
+                                      .split(",")
+                                      .map((s) => s.trim())
+                                      .filter(Boolean)
+                                  )
+                                }
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
                     </div>
                   </div>
 
