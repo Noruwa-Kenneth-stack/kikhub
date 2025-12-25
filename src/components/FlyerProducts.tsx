@@ -1257,23 +1257,28 @@ export default function FlyerProducts() {
                             >
                               Add Thumbnail
                             </Button>
-                            <div className="flex flex-wrap gap-2 mt-2">
-                             {(field.value || []).map((thumb: string, i: number) => (
-  <div key={i} className="px-3 py-1 bg-secondary rounded-md flex items-center gap-2">
-    <span>{thumb}</span>
-    <button
-      type="button"
-      onClick={() => {
-        const updated = (field.value || []).filter((_: string, idx: number) => idx !== i);
-        form.setValue("image_thumbnails", updated);
-      }}
-      className="text-red-500 text-sm"
+                      <div className="flex flex-wrap gap-2 mt-2">
+  {(field.value || []).map((thumb: string, i: number) => (
+    <div
+      key={i}
+      className="px-3 py-1 bg-secondary rounded-md flex items-center gap-2"
     >
-      ✕
-    </button>
-  </div>
-))}
-                            </div>
+      <span>{thumb}</span>
+      <button
+        type="button"
+        onClick={() => {
+          const updated = (field.value || []).filter(
+            (_: string, idx: number) => idx !== i
+          );
+          form.setValue("image_thumbnails", updated);
+        }}
+        className="text-red-500 text-sm"
+      >
+        ✕
+      </button>
+    </div>
+  ))}
+</div>
                             <FormMessage />
                           </FormItem>
                         )}
