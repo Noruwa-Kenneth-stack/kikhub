@@ -21,7 +21,7 @@ if (!globalForPg.pool) globalForPg.pool = pool;
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { product_id, title, subtitle, headline, image, city } = body;
+    const { product_id, title, subtitle, headlines, image, city } = body;
 
     // Validate product_id strictly
     const parsedProductId =
@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
       parsedProductId,
       title,
       subtitle || null,
-      headline || null,
+      headlines || null,
       image || null,
       city || null,
     ];
