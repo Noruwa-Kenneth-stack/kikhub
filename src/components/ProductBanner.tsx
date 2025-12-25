@@ -24,7 +24,7 @@ const formSchema = z.object({
   product_id: z
     .number({ message: "Product ID must be a number" })
     .min(1, "Product ID is required"),
-  title: z.string().min(1, "Title is required"),
+  title: z.string().optional(),
   headlines: z.string().optional(),
   subtitle: z.string().optional(),
   image: z.string().optional(),

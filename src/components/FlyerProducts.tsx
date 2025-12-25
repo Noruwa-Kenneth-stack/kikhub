@@ -1206,40 +1206,80 @@ export default function FlyerProducts() {
                     </div>
                   </div>
                   {/* Media - 2 Columns */}
+                  {/* Media - 2 Columns */}
                   <div>
                     <h2 className="text-lg font-semibold text-foreground mb-4">
                       Media
                     </h2>
                     <div className="grid gap-6 md:grid-cols-2">
-                      {["image.jpg", "image_thumbnails.jpg"].map((name) => (
-                        <FormField
-                          key={name}
-                          control={form.control}
-                          name={name as keyof FormValues}
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>
-                                {name
-                                  .replace(/_/g, " ")
-                                  .replace(/\b\w/g, (c) => c.toUpperCase())}
-                              </FormLabel>
-                              <FormControl>
-                                <Input
-                                  placeholder={`Enter ${name.replace(
-                                    /_/g,
-                                    " "
-                                  )}`}
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      ))}
+                      <FormField
+                        control={form.control}
+                        name="image"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Main Image</FormLabel>
+                            <FormControl>
+                              <Input placeholder="e.g. corn.jpg" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="image_thumbnails"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Image Thumbnails (multiple)</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="e.g. thumb1.jpg"
+                                value={value}
+                                onChange={(e) => setValue(e.target.value)}
+                              />
+                            </FormControl>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              className="mt-2"
+                              onClick={() => {
+                                if (value.trim()) {
+                                  const updated = [
+                                    ...(field.value || []),
+                                    value.trim(),
+                                  ];
+                                  form.setValue("image_thumbnails", updated);
+                                  setValue("");
+                                }
+                              }}
+                            >
+                              Add Thumbnail
+                            </Button>
+                            <div className="flex flex-wrap gap-2 mt-2">
+                             {(field.value || []).map((thumb: string, i: number) => (
+  <div key={i} className="px-3 py-1 bg-secondary rounded-md flex items-center gap-2">
+    <span>{thumb}</span>
+    <button
+      type="button"
+      onClick={() => {
+        const updated = (field.value || []).filter((_: string, idx: number) => idx !== i);
+        form.setValue("image_thumbnails", updated);
+      }}
+      className="text-red-500 text-sm"
+    >
+      ✕
+    </button>
+  </div>
+))}
+                            </div>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
                     </div>
                   </div>
-
                   {/* Description - single column textareas */}
                   <div className="grid gap-6">
                     {["short_description", "long_description"].map((name) => (

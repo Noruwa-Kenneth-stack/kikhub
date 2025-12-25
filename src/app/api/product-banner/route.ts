@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     console.error("[POST product_banner] Error:", err);
     return NextResponse.json(
-      { error: "Failed to insert product banner" },
+      { error: "Failed to insert product banners" },
       { status: 500 }
     );
   }

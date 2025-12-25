@@ -126,6 +126,7 @@ const StoreSection = () => {
     toast({
       title: "Success!",
       description: "Store has been added successfully.",
+      variant: "success",
     });
 
     form.reset();
