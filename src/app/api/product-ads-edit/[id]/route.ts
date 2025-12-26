@@ -5,10 +5,9 @@ export const runtime = "nodejs";
 
 const { Pool } = pkg;
 
-// 👇 singleton pattern
+// Singleton pattern
 const globalForPg = global as unknown as { pool?: pkg.Pool };
 
-// 👇 singleton pattern
 const pool =
   globalForPg.pool ??
   new Pool({
@@ -25,34 +24,25 @@ export async function PATCH(
 ) {
   try {
     const { id } = await context.params;
-    const storeId = Number(id);
-
-    if (!Number.isInteger(storeId)) {
-      return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
-    }
+    console.log("[PATCH product_ads] ID:", id);
 
     const body = await req.json();
+    console.log("[PATCH product_ads] Body:", body);
 
-    const allowedColumns = [
-      "title",
-      "description",
-      "city",
-      "src",
-      "alt",
-      "status",
-      "featured",
-      "image",
-    ];
-
+    // Filter out undefined/null/empty string fields AND updated_at
     const keys = Object.keys(body).filter(
       (k) =>
-        allowedColumns.includes(k) &&
+        k !== "updated_at" &&
         body[k] !== undefined &&
         body[k] !== null &&
-        body[k] !== ""
+        body[k] !== "" &&
+        (typeof body[k] !== "object" || Object.keys(body[k]).length > 0)
     );
 
+    console.log("[PATCH product_ads] Valid keys to update:", keys);
+
     if (keys.length === 0) {
+      console.log("[PATCH product_ads] No valid fields to update");
       return NextResponse.json({ success: true });
     }
 
@@ -60,26 +50,27 @@ export async function PATCH(
     const setClause = keys.map((k, i) => `${k} = $${i + 1}`).join(", ");
 
     const query = `
-      UPDATE store_ads
-      SET ${setClause}
+      UPDATE product_ads
+      SET ${setClause}, updated_at = NOW()
       WHERE id = $${keys.length + 1}
       RETURNING *;
     `;
 
-    const result = await pool.query(query, [...values, storeId]);
+    console.log("[PATCH product_ads] Query:", query);
+    console.log("[PATCH product_ads] Values:", [...values, id]);
 
-    if (result.rowCount === 0) {
-      return NextResponse.json({ error: "Not found" }, { status: 404 });
-    }
+    const result = await pool.query(query, [...values, id]);
+    console.log("[PATCH product_ads] Result rows:", result.rows);
 
     return NextResponse.json({ success: true, data: result.rows[0] });
   } catch (err) {
-    console.error("[PATCH store_ads] Error:", err);
-    return NextResponse.json({ error: "Update failed" }, { status: 500 });
+    console.error("[PATCH product_ads] Error:", err);
+    return NextResponse.json(
+      { error: "Update failed", details: String(err) },
+      { status: 500 }
+    );
   }
 }
-
-
 
 // ---------------- DELETE ----------------
 export async function DELETE(
@@ -88,25 +79,25 @@ export async function DELETE(
 ) {
   try {
     const { id } = await context.params;
-    const storeId = Number(id);
+    console.log("[DELETE product_ads] ID:", id);
 
-    if (!Number.isInteger(storeId)) {
-      return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
+    if (!id) {
+      return NextResponse.json({ error: "ID required" }, { status: 400 });
     }
 
     const result = await pool.query(
-      "DELETE FROM store_ads WHERE id = $1 RETURNING *",
-      [storeId]
+      "DELETE FROM product_ads WHERE id = $1 RETURNING *",
+      [id]
     );
 
     if (result.rowCount === 0) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ success: true, data: result.rows[0] });
+    console.log("[DELETE product_ads] Deleted:", result.rows[0]);
+    return NextResponse.json({ message: "Deleted", data: result.rows[0] });
   } catch (err) {
-    console.error("[DELETE store_ads] Error:", err);
+    console.error("[DELETE product_ads] Error:", err);
     return NextResponse.json({ error: "Delete failed" }, { status: 500 });
   }
 }
-
