@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
     const values = [
       src || null,
       alt || null,
-      title,
+      title || null,
       description || null,
       city || null,
     ];

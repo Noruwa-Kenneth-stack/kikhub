@@ -22,7 +22,7 @@ const settings = getAppSettings();
 const formSchema = z.object({
   src: z.string().optional(),
   alt: z.string().optional(),
-  title: z.string().min(1, "Title is required"),
+  title: z.string().optional(),
   description: z.string().optional(),
   city: z.string().optional(),
 });

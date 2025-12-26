@@ -5,10 +5,10 @@ export const runtime = "nodejs";
 
 const { Pool } = pkg;
 
-// 👇 singleton pattern
+
 const globalForPg = global as unknown as { pool?: pkg.Pool };
 
-// 👇 singleton pattern
+
 const pool =
   globalForPg.pool ??
   new Pool({
