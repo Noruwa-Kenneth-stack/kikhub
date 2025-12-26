@@ -23,6 +23,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { src, alt, title, description, city } = body;
 
+
     const query = `
       INSERT INTO store_ads
       (src, alt, title, description, city)
@@ -33,7 +34,7 @@ export async function POST(req: NextRequest) {
     const values = [
       src || null,
       alt || null,
-      title || null,
+      title?.trim() || null,
       description || null,
       city || null,
     ];
