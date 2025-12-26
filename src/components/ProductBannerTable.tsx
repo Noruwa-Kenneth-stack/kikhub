@@ -135,6 +135,7 @@ export default function ProductBannerTable({
   };
 
   const deleteBanner = async (id: number) => {
+    if (!confirm("Are you sure you want to delete this ad?")) return;
     try {
       const res = await fetch(`/api/product-banner-edit/${id}`, {
         method: "DELETE",

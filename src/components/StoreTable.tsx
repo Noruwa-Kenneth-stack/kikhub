@@ -128,6 +128,7 @@ export default function StoreTable({ itemsPerPage = 10 }: StoreTableProps) {
 
   // Delete store
   const deleteStore = async (id: number) => {
+    if (!confirm("Are you sure you want to delete this store?")) return;
     try {
       const res = await fetch(`/api/stores-edit/${id}`, { method: "DELETE" });
       if (!res.ok) throw new Error("Failed to delete store");

@@ -164,6 +164,7 @@ return () => clearInterval(interval);
 
   // Delete product
   const deleteProduct = async (id: number) => {
+    if (!confirm("Are you sure you want to delete this product?")) return;
     try {
       const res = await fetch(`/api/flyer_products_edit/${id}`, {
         method: "DELETE",

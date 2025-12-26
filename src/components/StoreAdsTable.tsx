@@ -122,6 +122,7 @@ export default function StoreAdsTable({
 
   // Delete --------------------------------------------------
   const deleteAd = async (id: number) => {
+    if (!confirm("Are you sure you want to delete this ad?")) return;
     try {
       const res = await fetch(`/api/storeads-edit/${id}`, {
         method: "DELETE",

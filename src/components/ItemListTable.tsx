@@ -131,6 +131,7 @@ const [refreshInterval, setRefreshInterval] = useState<number | undefined>();
   };
 
   const deleteItem = async (id: number) => {
+    if (!confirm("Are you sure you want to delete this item?")) return;
     try {
       const res = await fetch(`/api/itemlist-edit/${id}`, { method: "DELETE" });
       if (!res.ok) throw new Error("Delete failed");
