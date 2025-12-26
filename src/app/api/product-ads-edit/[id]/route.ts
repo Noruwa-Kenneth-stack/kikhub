@@ -25,24 +25,34 @@ export async function PATCH(
 ) {
   try {
     const { id } = await context.params;
-    console.log("[PATCH store_ads] ID:", id);
+    const storeId = Number(id);
+
+    if (!Number.isInteger(storeId)) {
+      return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
+    }
 
     const body = await req.json();
-    console.log("[PATCH store_ads] Body:", body);
 
-    // Remove undefined/null/empty fields AND updated_at
+    const allowedColumns = [
+      "title",
+      "description",
+      "city",
+      "src",
+      "alt",
+      "status",
+      "featured",
+      "image",
+    ];
+
     const keys = Object.keys(body).filter(
       (k) =>
-        k !== "updated_at" && // <-- make sure we exclude this
+        allowedColumns.includes(k) &&
         body[k] !== undefined &&
         body[k] !== null &&
-        body[k] !== "" &&
-        (typeof body[k] !== "object" || Object.keys(body[k]).length > 0)
+        body[k] !== ""
     );
-    console.log("[PATCH store_ads] Valid keys to update:", keys);
 
     if (keys.length === 0) {
-      console.log("[PATCH store_ads] No valid fields to update");
       return NextResponse.json({ success: true });
     }
 
@@ -51,23 +61,24 @@ export async function PATCH(
 
     const query = `
       UPDATE store_ads
-      SET ${setClause}  -- updated_at removed
+      SET ${setClause}
       WHERE id = $${keys.length + 1}
       RETURNING *;
     `;
 
-    console.log("[PATCH store_ads] Query:", query);
-    console.log("[PATCH store_ads] Values:", [...values, id]);
+    const result = await pool.query(query, [...values, storeId]);
 
-    const result = await pool.query(query, [...values, id]);
-    console.log("[PATCH store_ads] Result rows:", result.rows);
+    if (result.rowCount === 0) {
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
 
     return NextResponse.json({ success: true, data: result.rows[0] });
   } catch (err) {
     console.error("[PATCH store_ads] Error:", err);
-    return NextResponse.json({ error: "Update failed", details: String(err) }, { status: 500 });
+    return NextResponse.json({ error: "Update failed" }, { status: 500 });
   }
 }
+
 
 
 // ---------------- DELETE ----------------
@@ -77,25 +88,25 @@ export async function DELETE(
 ) {
   try {
     const { id } = await context.params;
-    console.log("[DELETE store_ads] ID:", id);
+    const storeId = Number(id);
 
-    if (!id) {
-      return NextResponse.json({ error: "ID required" }, { status: 400 });
+    if (!Number.isInteger(storeId)) {
+      return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
     }
 
     const result = await pool.query(
       "DELETE FROM store_ads WHERE id = $1 RETURNING *",
-      [id]
+      [storeId]
     );
 
     if (result.rowCount === 0) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
 
-    console.log("[DELETE store_ads] Deleted:", result.rows[0]);
-    return NextResponse.json({ message: "Deleted", data: result.rows[0] });
+    return NextResponse.json({ success: true, data: result.rows[0] });
   } catch (err) {
     console.error("[DELETE store_ads] Error:", err);
     return NextResponse.json({ error: "Delete failed" }, { status: 500 });
   }
 }
+
