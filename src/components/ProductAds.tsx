@@ -19,7 +19,7 @@ import { getAppSettings } from "@/utils/appSettings";
 const settings = getAppSettings();
 const formSchema = z.object({
   image: z.string().optional(),
-  title: z.string().min(1, "Title is required"),
+  title: z.string().optional(),
   subtitle: z.string().optional(),
   price: z.string().optional(),
   offer: z.string().optional(),
