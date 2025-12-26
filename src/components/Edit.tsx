@@ -111,6 +111,7 @@ export default function Edit() {
       toast({
         title: "Success!",
         description: "General settings saved successfully.",
+        variant: "success",
       });
     } catch (error) {
       console.error(error);
@@ -422,7 +423,7 @@ export default function Edit() {
 
                       <div className="space-y-4">
                         {/* STORES */}
-                        <div className="rounded-lg border p-4">
+                        <div className="rounded-lg border p-4 success-border ">
                           <h3 className="font-bold mb-2">Stores</h3>
                           <p className="text-sm text-muted-foreground mb-3">
                             Edit store names, status, location etc.
@@ -444,7 +445,7 @@ export default function Edit() {
                         </div>
 
                         {/* FLYERS */}
-                        <div className="rounded-lg border p-4">
+                        <div className="rounded-lg border p-4 success-border ">
                           <h3 className="font-bold mb-2">Flyers</h3>
                           <p className="text-sm text-muted-foreground mb-3">
                             Manage flyers and their products categories
@@ -466,7 +467,7 @@ export default function Edit() {
                         </div>
 
                         {/* STORE ADS */}
-                        <div className="rounded-lg border p-4">
+                       <div className="rounded-lg border p-4 success-border ">
                           <h3 className="font-bold mb-2">Store Ads</h3>
                           <p className="text-sm text-muted-foreground mb-3">
                             Manage your Ads
@@ -488,7 +489,7 @@ export default function Edit() {
                         </div>
 
                         {/* PRODUCT ADS */}
-                        <div className="rounded-lg border p-4">
+                        <div className="rounded-lg border p-4 success-border ">
                           <h3 className="font-bold mb-2">Products Ads</h3>
                           <p className="text-sm text-muted-foreground mb-3">
                             Manage Product Ads
@@ -510,7 +511,7 @@ export default function Edit() {
                         </div>
 
                         {/* PRODUCT BANNER */}
-                        <div className="rounded-lg border p-4">
+                        <div className="rounded-lg border p-4 success-border ">
                           <h3 className="font-bold mb-2">Products Banner</h3>
                           <p className="text-sm text-muted-foreground mb-3">
                             Manage Products Banner
@@ -532,7 +533,7 @@ export default function Edit() {
                         </div>
 
                         {/* ITEMS LIST */}
-                        <div className="rounded-lg border p-4">
+                        <div className="rounded-lg border p-4 success-border ">
                           <h3 className="font-bold mb-2">Items List</h3>
                           <p className="text-sm text-muted-foreground mb-3">
                             Manage Items List
