@@ -185,7 +185,9 @@ const [refreshInterval, setRefreshInterval] = useState<number | undefined>();
       </div>
 
       <div className="w-full overflow-x-auto">
-        <table className="min-w-max border text-sm table-auto">
+        <table className="min-w-max border table-auto text-xs
+  bg-white dark:bg-card
+  text-black">
           <thead className="bg-gray-50">
             <tr>
               <th className="border px-3 py-2">ID</th>

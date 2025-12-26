@@ -164,7 +164,8 @@ export default function StoreAdsTable({
       </div>
 
       <div className="w-full overflow-x-auto">
-        <table className="min-w-max border text-sm table-auto">
+        <table className="min-w-max border text-sm table-auto bg-white dark:bg-card
+  text-black">
           <thead className="bg-gray-50">
             <tr>
               {COLUMNS.map((col) => (

@@ -49,8 +49,6 @@ const generalSettingsSchema = z.object({
   refreshInterval: z.number().optional(),
 });
 
-
-
 type GeneralSettings = z.infer<typeof generalSettingsSchema>;
 
 export default function Edit() {
@@ -92,7 +90,6 @@ export default function Edit() {
     resolver: zodResolver(generalSettingsSchema),
     defaultValues: loadSavedSettings(),
   });
-
 
   useAutoSave(
     generalForm.watch(), // watch all general form fields
@@ -409,7 +406,6 @@ export default function Edit() {
                 </Card>
               </TabsContent>
 
-              
               <TabsContent value="content">
                 <Card className="p-6">
                   {contentSection === "main" && (
@@ -435,7 +431,13 @@ export default function Edit() {
                             variant="outline"
                             size="sm"
                             onClick={() => setContentSection("stores")}
-                            className="bg-white text-foreground hover:bg-blue-600 hover:text-white transition-colors duration-200"
+                            className=" bg-white
+    text-black
+    dark:text-black
+    hover:bg-blue-600
+    hover:text-white
+    transition-colors
+    duration-200"
                           >
                             Manage Stores
                           </Button>
@@ -451,7 +453,13 @@ export default function Edit() {
                             variant="outline"
                             size="sm"
                             onClick={() => setContentSection("flyers")}
-                            className="bg-white hover:bg-blue-600 hover:text-white transition-colors duration-200"
+                            className=" bg-white
+    text-black
+    dark:text-black
+    hover:bg-blue-600
+    hover:text-white
+    transition-colors
+    duration-200"
                           >
                             Manage Products
                           </Button>
@@ -467,7 +475,13 @@ export default function Edit() {
                             variant="outline"
                             size="sm"
                             onClick={() => setContentSection("storeAds")}
-                            className="bg-white hover:bg-blue-600 hover:text-white transition-colors duration-200"
+                            className=" bg-white
+    text-black
+    dark:text-black
+    hover:bg-blue-600
+    hover:text-white
+    transition-colors
+    duration-200"
                           >
                             Manage Ads
                           </Button>
@@ -483,7 +497,13 @@ export default function Edit() {
                             variant="outline"
                             size="sm"
                             onClick={() => setContentSection("productAds")}
-                            className="bg-white hover:bg-blue-600 hover:text-white transition-colors duration-200"
+                            className=" bg-white
+    text-black
+    dark:text-black
+    hover:bg-blue-600
+    hover:text-white
+    transition-colors
+    duration-200"
                           >
                             Manage Ads
                           </Button>
@@ -499,7 +519,13 @@ export default function Edit() {
                             variant="outline"
                             size="sm"
                             onClick={() => setContentSection("productBanner")}
-                            className="bg-white hover:bg-blue-600 hover:text-white transition-colors duration-200"
+                            className=" bg-white
+    text-black
+    dark:text-black
+    hover:bg-blue-600
+    hover:text-white
+    transition-colors
+    duration-200"
                           >
                             Manage Banner
                           </Button>
@@ -515,7 +541,13 @@ export default function Edit() {
                             variant="outline"
                             size="sm"
                             onClick={() => setContentSection("items")}
-                            className="bg-white hover:bg-blue-600 hover:text-white transition-colors duration-200"
+                            className=" bg-white
+    text-black
+    dark:text-black
+    hover:bg-blue-600
+    hover:text-white
+    transition-colors
+    duration-200"
                           >
                             Manage Items
                           </Button>

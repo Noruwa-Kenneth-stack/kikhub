@@ -230,11 +230,19 @@ return () => clearInterval(interval);
         />
       </div>
       <div className="w-full overflow-x-auto max-w-full">
-        <table className="w-max border-collapse border text-xs table-auto">
-          <thead className="bg-gray-50">
+        <table className="w-max border-collapse border text-xs table-auto 
+  bg-white dark:bg-card
+  text-black">
+          <thead className=" bg-gray-50
+  dark:bg-muted
+  text-xs">
             <tr>
               {headers.map((h) => (
-                <th key={h.key} className="border px-3 py-3 whitespace-nowrap">
+                <th key={h.key} className="border px-3 py-3   border
+    font-semibold
+    whitespace-nowrap
+    text-foreground
+    dark:border-border">
                   <ResizableColumn
                     width={colWidths[h.key]}
                     onResize={(w) => setWidth(h.key, w)}
@@ -247,11 +255,17 @@ return () => clearInterval(interval);
           </thead>
           <tbody>
             {products.map((p) => (
-              <tr key={p.id} className="odd:bg-gray-50">
+              <tr key={p.id} className=" odd:bg-gray-50
+    dark:odd:bg-muted
+    hover:bg-muted
+    dark:hover:bg-accent/10">
                 {headers.map((h) => (
                   <td
                     key={h.key}
-                    className="border px-1 py-1 align-top"
+                    className="border align-top  border
+  px-1 py-[2px]
+  text-foreground
+  dark:border-border"
                     style={{ width: colWidths[h.key] }}
                   >
                     {h.key === "actions" ? (

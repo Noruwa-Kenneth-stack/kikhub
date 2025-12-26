@@ -50,7 +50,11 @@ export default function StoreTable({ itemsPerPage = 10 }: StoreTableProps) {
       setTotalCount(data.total);
     } catch (err) {
       console.error(err);
-      toast({ title: "Error", description: "Failed to load stores", variant: "destructive" });
+      toast({
+        title: "Error",
+        description: "Failed to load stores",
+        variant: "destructive",
+      });
     }
   }, [page, search, itemsPerPage]);
 
@@ -58,8 +62,7 @@ export default function StoreTable({ itemsPerPage = 10 }: StoreTableProps) {
     loadStores();
   }, [loadStores]);
 
-
-    // =============================
+  // =============================
   // LOAD SETTINGS ON MOUNT
   // =============================
   useEffect(() => {
@@ -116,13 +119,21 @@ export default function StoreTable({ itemsPerPage = 10 }: StoreTableProps) {
 
       if (!res.ok) throw new Error("Failed to update");
 
-      toast({ title: "Success", description: "Store updated", variant: "success" });
+      toast({
+        title: "Success",
+        description: "Store updated",
+        variant: "success",
+      });
       setEditingStoreId(null);
       setForm({});
       loadStores();
     } catch (err) {
       console.error(err);
-      toast({ title: "Error", description: "Failed to update store", variant: "destructive" });
+      toast({
+        title: "Error",
+        description: "Failed to update store",
+        variant: "destructive",
+      });
     }
   };
 
@@ -133,11 +144,19 @@ export default function StoreTable({ itemsPerPage = 10 }: StoreTableProps) {
       const res = await fetch(`/api/stores-edit/${id}`, { method: "DELETE" });
       if (!res.ok) throw new Error("Failed to delete store");
 
-      toast({ title: "Deleted", description: "Store removed", variant: "success" });
+      toast({
+        title: "Deleted",
+        description: "Store removed",
+        variant: "success",
+      });
       loadStores();
     } catch (err) {
       console.error(err);
-      toast({ title: "Error", description: "Failed to delete store", variant: "destructive" });
+      toast({
+        title: "Error",
+        description: "Failed to delete store",
+        variant: "destructive",
+      });
     }
   };
 
@@ -158,12 +177,16 @@ export default function StoreTable({ itemsPerPage = 10 }: StoreTableProps) {
         />
       </div>
 
-      
-
       {/* TABLE */}
       <div className="overflow-x-auto w-full">
-        <table className="table-auto w-full border text-xs">
-          <thead className="bg-gray-50 text-xs">
+        <table
+          className="table-auto w-full border text-xs
+  bg-white dark:bg-card
+  text-black"
+        >
+          <thead className=" bg-gray-50
+  dark:bg-muted
+  text-xs">
             <tr>
               {[
                 "ID",
@@ -179,7 +202,15 @@ export default function StoreTable({ itemsPerPage = 10 }: StoreTableProps) {
                 "Opening Hours",
                 "Actions",
               ].map((col) => (
-                <th key={col} className="border px-1 py-1 font-semibold whitespace-nowrap">
+                <th
+                  key={col}
+                  className=" border
+    px-1 py-1
+    font-semibold
+    whitespace-nowrap
+    text-foreground
+    dark:border-border"
+                >
                   {col}
                 </th>
               ))}
@@ -188,7 +219,10 @@ export default function StoreTable({ itemsPerPage = 10 }: StoreTableProps) {
 
           <tbody>
             {stores.map((store) => (
-              <tr key={store.id} className="odd:bg-gray-50">
+              <tr key={store.id} className=" odd:bg-gray-50
+    dark:odd:bg-muted
+    hover:bg-muted
+    dark:hover:bg-accent/10">
                 <td className="border px-1 py-[2px]">{store.id}</td>
 
                 {/* NAME */}
@@ -196,7 +230,9 @@ export default function StoreTable({ itemsPerPage = 10 }: StoreTableProps) {
                   {editingStoreId === store.id ? (
                     <Input
                       value={form.store_name ?? store.store_name}
-                      onChange={(e) => setForm({ ...form, store_name: e.target.value })}
+                      onChange={(e) =>
+                        setForm({ ...form, store_name: e.target.value })
+                      }
                     />
                   ) : (
                     store.store_name
@@ -208,7 +244,9 @@ export default function StoreTable({ itemsPerPage = 10 }: StoreTableProps) {
                   {editingStoreId === store.id ? (
                     <Input
                       value={form.image_url ?? store.image_url ?? ""}
-                      onChange={(e) => setForm({ ...form, image_url: e.target.value })}
+                      onChange={(e) =>
+                        setForm({ ...form, image_url: e.target.value })
+                      }
                     />
                   ) : (
                     store.image_url
@@ -220,7 +258,9 @@ export default function StoreTable({ itemsPerPage = 10 }: StoreTableProps) {
                   {editingStoreId === store.id ? (
                     <Input
                       value={form.status ?? store.status}
-                      onChange={(e) => setForm({ ...form, status: e.target.value })}
+                      onChange={(e) =>
+                        setForm({ ...form, status: e.target.value })
+                      }
                     />
                   ) : (
                     store.status
@@ -232,7 +272,9 @@ export default function StoreTable({ itemsPerPage = 10 }: StoreTableProps) {
                   {editingStoreId === store.id ? (
                     <Switch
                       checked={form.featured ?? store.featured}
-                      onCheckedChange={(val) => setForm({ ...form, featured: val })}
+                      onCheckedChange={(val) =>
+                        setForm({ ...form, featured: val })
+                      }
                     />
                   ) : store.featured ? (
                     "Yes"
@@ -244,7 +286,12 @@ export default function StoreTable({ itemsPerPage = 10 }: StoreTableProps) {
                 {/* LOGO */}
                 <td className="border px-1 py-[2px] break-words max-w-[100px]">
                   {editingStoreId === store.id ? (
-                    <Input value={form.logo ?? store.logo ?? ""} onChange={(e) => setForm({ ...form, logo: e.target.value })} />
+                    <Input
+                      value={form.logo ?? store.logo ?? ""}
+                      onChange={(e) =>
+                        setForm({ ...form, logo: e.target.value })
+                      }
+                    />
                   ) : (
                     store.logo
                   )}
@@ -253,7 +300,12 @@ export default function StoreTable({ itemsPerPage = 10 }: StoreTableProps) {
                 {/* CITY */}
                 <td className="border px-2 py-1">
                   {editingStoreId === store.id ? (
-                    <Input value={form.city ?? store.city} onChange={(e) => setForm({ ...form, city: e.target.value })} />
+                    <Input
+                      value={form.city ?? store.city}
+                      onChange={(e) =>
+                        setForm({ ...form, city: e.target.value })
+                      }
+                    />
                   ) : (
                     store.city
                   )}
@@ -262,7 +314,12 @@ export default function StoreTable({ itemsPerPage = 10 }: StoreTableProps) {
                 {/* ADDRESS */}
                 <td className="border px-1 py-[2px] break-words max-w-[100px]">
                   {editingStoreId === store.id ? (
-                    <Input value={form.address ?? store.address} onChange={(e) => setForm({ ...form, address: e.target.value })} />
+                    <Input
+                      value={form.address ?? store.address}
+                      onChange={(e) =>
+                        setForm({ ...form, address: e.target.value })
+                      }
+                    />
                   ) : (
                     store.address
                   )}
@@ -272,11 +329,16 @@ export default function StoreTable({ itemsPerPage = 10 }: StoreTableProps) {
                 <td className="border px-2 py-1">
                   {editingStoreId === store.id ? (
                     <Input
-                      value={form.categories?.join(", ") ?? store.categories.join(", ")}
+                      value={
+                        form.categories?.join(", ") ??
+                        store.categories.join(", ")
+                      }
                       onChange={(e) =>
                         setForm({
                           ...form,
-                          categories: e.target.value.split(",").map((c) => c.trim()),
+                          categories: e.target.value
+                            .split(",")
+                            .map((c) => c.trim()),
                         })
                       }
                     />
@@ -297,8 +359,12 @@ export default function StoreTable({ itemsPerPage = 10 }: StoreTableProps) {
                           setForm({
                             ...form,
                             location: {
-                              ...(form.location ?? store.location ?? { lat: null, lng: null }),
-                              lat: e.target.value === "" ? null : parseFloat(e.target.value),
+                              ...(form.location ??
+                                store.location ?? { lat: null, lng: null }),
+                              lat:
+                                e.target.value === ""
+                                  ? null
+                                  : parseFloat(e.target.value),
                             },
                           })
                         }
@@ -311,8 +377,12 @@ export default function StoreTable({ itemsPerPage = 10 }: StoreTableProps) {
                           setForm({
                             ...form,
                             location: {
-                              ...(form.location ?? store.location ?? { lat: null, lng: null }),
-                              lng: e.target.value === "" ? null : parseFloat(e.target.value),
+                              ...(form.location ??
+                                store.location ?? { lat: null, lng: null }),
+                              lng:
+                                e.target.value === ""
+                                  ? null
+                                  : parseFloat(e.target.value),
                             },
                           })
                         }
@@ -328,7 +398,12 @@ export default function StoreTable({ itemsPerPage = 10 }: StoreTableProps) {
                 {/* OPENING HOURS */}
                 <td className="border px-1 py-[2px] break-words max-w-[100px]">
                   {editingStoreId === store.id ? (
-                    <Input value={form.opening_hours ?? store.opening_hours} onChange={(e) => setForm({ ...form, opening_hours: e.target.value })} />
+                    <Input
+                      value={form.opening_hours ?? store.opening_hours}
+                      onChange={(e) =>
+                        setForm({ ...form, opening_hours: e.target.value })
+                      }
+                    />
                   ) : (
                     store.opening_hours
                   )}
@@ -338,7 +413,10 @@ export default function StoreTable({ itemsPerPage = 10 }: StoreTableProps) {
                 <td className="border px-2 py-1 flex gap-2">
                   {editingStoreId === store.id ? (
                     <>
-                      <Button className="h-6 px-2 text-xs" onClick={() => saveStore(store.id)}>
+                      <Button
+                        className="h-6 px-2 text-xs"
+                        onClick={() => saveStore(store.id)}
+                      >
                         Save
                       </Button>
                       <Button
@@ -354,10 +432,20 @@ export default function StoreTable({ itemsPerPage = 10 }: StoreTableProps) {
                     </>
                   ) : (
                     <>
-                      <Button className="h-6 px-2 text-xs" onClick={() => { setEditingStoreId(store.id); setForm(store); }}>
+                      <Button
+                        className="h-6 px-2 text-xs"
+                        onClick={() => {
+                          setEditingStoreId(store.id);
+                          setForm(store);
+                        }}
+                      >
                         Edit
                       </Button>
-                      <Button className="h-6 px-2 text-xs" variant="destructive" onClick={() => deleteStore(store.id)}>
+                      <Button
+                        className="h-6 px-2 text-xs"
+                        variant="destructive"
+                        onClick={() => deleteStore(store.id)}
+                      >
                         Delete
                       </Button>
                     </>
@@ -375,10 +463,18 @@ export default function StoreTable({ itemsPerPage = 10 }: StoreTableProps) {
           Page {page} of {totalPages}
         </div>
         <div className="flex gap-2">
-          <Button className="h-7 px-3 text-xs" disabled={page === 1} onClick={() => setPage(page - 1)}>
+          <Button
+            className="h-7 px-3 text-xs"
+            disabled={page === 1}
+            onClick={() => setPage(page - 1)}
+          >
             Prev
           </Button>
-          <Button className="h-7 px-3 text-xs" disabled={page >= totalPages} onClick={() => setPage(page + 1)}>
+          <Button
+            className="h-7 px-3 text-xs"
+            disabled={page >= totalPages}
+            onClick={() => setPage(page + 1)}
+          >
             Next
           </Button>
         </div>

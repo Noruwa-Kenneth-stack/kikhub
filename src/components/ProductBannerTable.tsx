@@ -190,7 +190,9 @@ export default function ProductBannerTable({
 
       {/* TABLE */}
       <div className="w-full overflow-x-auto max-w-full">
-        <table className="w-max border-collapse border text-xs table-auto">
+        <table className="w-max border-collapse border text-xs
+  bg-white dark:bg-card
+  text-black table-auto">
           <thead className="bg-gray-50">
             <tr>
               {headers.map((h) => (
