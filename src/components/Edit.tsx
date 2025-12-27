@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -61,9 +61,7 @@ export default function Edit() {
       const saved = localStorage.getItem("appSettings");
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed?.theme) {
-          setTheme(parsed.theme);
-        }
+      
         return {
           ...parsed,
           itemsPerPage: parsed.itemsPerPage?.toString() || "10",
@@ -85,6 +83,8 @@ export default function Edit() {
       refreshInterval: 15,
     };
   };
+
+
 
   const generalForm = useForm<GeneralSettings>({
     resolver: zodResolver(generalSettingsSchema),
@@ -124,9 +124,15 @@ export default function Edit() {
       setIsSaving(false);
     }
   };
-
+  const themeValue = generalForm.watch("theme");
   const [activeTab, setActiveTab] = useState<string>("general");
   const [contentSection, setContentSection] = useState<string>("main");
+
+  useEffect(() => {
+  if (themeValue) {
+    setTheme(themeValue);
+  }
+}, [themeValue, setTheme]);
 
   return (
     <SidebarProvider>
@@ -268,12 +274,9 @@ export default function Edit() {
                               <FormItem>
                                 <FormLabel>Theme Mode</FormLabel>
                                 <Select
-                                  value={field.value}
-                                  onValueChange={(value) => {
-                                    field.onChange(value);
-                                    setTheme(value); // 🔥 apply instantly
-                                  }}
-                                >
+        value={field.value}
+        onValueChange={field.onChange}
+      >
                                   <FormControl>
                                     <SelectTrigger>
                                       <SelectValue placeholder="Select theme" />
