@@ -578,7 +578,7 @@ export default function FlyerProducts() {
                     <h2 className="text-lg font-semibold text-foreground mb-4">
                       Basic Information
                     </h2>
-                    <div className="grid gap-6 md:grid-cols-2">
+                    <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
                       <FormField
                         control={form.control}
                         name="store_id"
@@ -655,7 +655,7 @@ export default function FlyerProducts() {
                                 }}
                                 value={field.value[0] || ""}
                               >
-                                <SelectTrigger>
+                               <SelectTrigger className="w-full">
                                   <SelectValue placeholder="Select a brand" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -773,7 +773,7 @@ export default function FlyerProducts() {
                                 }
                                 value={field.value || ""}
                               >
-                                <SelectTrigger>
+                                <SelectTrigger className="w-full">
                                   <SelectValue placeholder="Select status" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -814,7 +814,7 @@ export default function FlyerProducts() {
                                     : ""
                                 }
                               >
-                                <SelectTrigger>
+                               <SelectTrigger className="w-full">
                                   <SelectValue placeholder="Select a compare key" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -943,7 +943,7 @@ export default function FlyerProducts() {
                                 onValueChange={field.onChange}
                                 value={field.value || ""}
                               >
-                                <SelectTrigger>
+                               <SelectTrigger className="w-full">
                                   <SelectValue placeholder="Select main category" />
                                 </SelectTrigger>
 
@@ -1032,7 +1032,7 @@ export default function FlyerProducts() {
                                 onValueChange={field.onChange}
                                 value={field.value || ""}
                               >
-                                <SelectTrigger>
+                                <SelectTrigger className="w-full">
                                   <SelectValue placeholder="Select a category" />
                                 </SelectTrigger>
 
@@ -1124,7 +1124,7 @@ export default function FlyerProducts() {
                                 onValueChange={field.onChange}
                                 value={field.value || ""}
                               >
-                                <SelectTrigger>
+                               <SelectTrigger className="w-full">
                                   <SelectValue placeholder="Select a subcategory" />
                                 </SelectTrigger>
 

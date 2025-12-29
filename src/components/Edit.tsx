@@ -61,7 +61,7 @@ export default function Edit() {
       const saved = localStorage.getItem("appSettings");
       if (saved) {
         const parsed = JSON.parse(saved);
-      
+
         return {
           ...parsed,
           itemsPerPage: parsed.itemsPerPage?.toString() || "10",
@@ -78,13 +78,11 @@ export default function Edit() {
       enableNotifications: true,
       theme: "light",
       imageOptimization: true,
-      autosaveInterval: 30,
+      autosaveInterval: 100,
       enableAutoRefresh: true,
       refreshInterval: 15,
     };
   };
-
-
 
   const generalForm = useForm<GeneralSettings>({
     resolver: zodResolver(generalSettingsSchema),
@@ -129,10 +127,10 @@ export default function Edit() {
   const [contentSection, setContentSection] = useState<string>("main");
 
   useEffect(() => {
-  if (themeValue) {
-    setTheme(themeValue);
-  }
-}, [themeValue, setTheme]);
+    if (themeValue) {
+      setTheme(themeValue);
+    }
+  }, [themeValue, setTheme]);
 
   return (
     <SidebarProvider>
@@ -274,9 +272,9 @@ export default function Edit() {
                               <FormItem>
                                 <FormLabel>Theme Mode</FormLabel>
                                 <Select
-        value={field.value}
-        onValueChange={field.onChange}
-      >
+                                  value={field.value}
+                                  onValueChange={field.onChange}
+                                >
                                   <FormControl>
                                     <SelectTrigger>
                                       <SelectValue placeholder="Select theme" />
@@ -310,23 +308,23 @@ export default function Edit() {
                                 <FormControl>
                                   <Input
                                     type="number"
-                                    min={10}
-                                    max={600}
-                                    step={5}
-                                    placeholder="e.g. 30"
+                                    min={100}
+                                    max={10000}
+                                    step={100}
+                                    placeholder="e.g. 60"
                                     {...field}
                                     onChange={(e) =>
                                       field.onChange(
                                         e.target.value === ""
                                           ? undefined
-                                          : e.target.value
+                                          :  Number(e.target.value)
                                       )
                                     }
                                   />
                                 </FormControl>
                                 <FormDescription>
                                   Automatically save drafts every X seconds
-                                  (10–600)
+                                  (100–10000)
                                 </FormDescription>
                                 <FormMessage />
                               </FormItem>
@@ -470,7 +468,7 @@ export default function Edit() {
                         </div>
 
                         {/* STORE ADS */}
-                       <div className="rounded-lg border p-4 success-border ">
+                        <div className="rounded-lg border p-4 success-border ">
                           <h3 className="font-bold mb-2">Store Ads</h3>
                           <p className="text-sm text-muted-foreground mb-3">
                             Manage your Ads
