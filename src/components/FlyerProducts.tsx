@@ -566,19 +566,19 @@ export default function FlyerProducts() {
     <SidebarProvider>
       <div className="flex min-h-screen w-full bg-muted/30">
         <div className="flex-1">
-          <div className="container mx-auto px-6 py-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
             <Card className="p-6">
               <Form {...form}>
                 <form
                   onSubmit={form.handleSubmit(onSubmit)}
                   className="space-y-8"
                 >
-                  {/* Basic Information - 2 Columns */}
-                  <div>
+                  {/* ===== Basic Info ===== */}
+                  <section>
                     <h2 className="text-lg font-semibold text-foreground mb-4">
                       Basic Information
                     </h2>
-                    <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid gap-6 grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(300px,1fr))]">
                       <FormField
                         control={form.control}
                         name="store_id"
@@ -655,7 +655,7 @@ export default function FlyerProducts() {
                                 }}
                                 value={field.value[0] || ""}
                               >
-                               <SelectTrigger className="w-full">
+                                <SelectTrigger className="w-full">
                                   <SelectValue placeholder="Select a brand" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -814,7 +814,7 @@ export default function FlyerProducts() {
                                     : ""
                                 }
                               >
-                               <SelectTrigger className="w-full">
+                                <SelectTrigger className="w-full">
                                   <SelectValue placeholder="Select a compare key" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -890,14 +890,15 @@ export default function FlyerProducts() {
                         </DialogContent>
                       </Dialog>
                     </div>
-                  </div>
+                  </section>
 
-                  {/* Pricing - 2 Columns */}
-                  <div>
+                  {/* ===== Pricing ===== */}
+
+                  <section>
                     <h2 className="text-lg font-semibold text-foreground mb-4">
                       Pricing
                     </h2>
-                    <div className="grid gap-6 md:grid-cols-2">
+                    <div className="grid gap-6 grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(280px,1fr))]">
                       {["price", "discounted_price"].map((name) => (
                         <FormField
                           key={name}
@@ -924,10 +925,10 @@ export default function FlyerProducts() {
                         />
                       ))}
                     </div>
-                  </div>
+                  </section>
 
-                  {/* Categories - 3 Columns */}
-                  <div>
+                  {/* ===== Categories ===== */}
+                  <section>
                     <h2 className="text-lg font-semibold text-foreground mb-4">
                       Categories
                     </h2>
@@ -943,7 +944,7 @@ export default function FlyerProducts() {
                                 onValueChange={field.onChange}
                                 value={field.value || ""}
                               >
-                               <SelectTrigger className="w-full">
+                                <SelectTrigger className="w-full">
                                   <SelectValue placeholder="Select main category" />
                                 </SelectTrigger>
 
@@ -1124,7 +1125,7 @@ export default function FlyerProducts() {
                                 onValueChange={field.onChange}
                                 value={field.value || ""}
                               >
-                               <SelectTrigger className="w-full">
+                                <SelectTrigger className="w-full">
                                   <SelectValue placeholder="Select a subcategory" />
                                 </SelectTrigger>
 
@@ -1204,13 +1205,14 @@ export default function FlyerProducts() {
                         </DialogContent>
                       </Dialog>
                     </div>
-                  </div>
-                  {/* Media - 2 Columns */}
-                  <div>
+                  </section>
+
+                  {/* ===== Media ===== */}
+                  <section>
                     <h2 className="text-lg font-semibold text-foreground mb-4">
                       Media
                     </h2>
-                    <div className="grid gap-6 md:grid-cols-2">
+                    <div className="grid gap-6 grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(280px,1fr))]">
                       <FormField
                         control={form.control}
                         name="image"
@@ -1254,10 +1256,10 @@ export default function FlyerProducts() {
                         )}
                       />
                     </div>
-                  </div>
+                  </section>
 
-                  {/* Description - single column textareas */}
-                  <div className="grid gap-6">
+                  {/* ===== Description ===== */}
+                  <section className="grid gap-6">
                     {["short_description", "long_description"].map((name) => (
                       <FormField
                         key={name}
@@ -1281,17 +1283,17 @@ export default function FlyerProducts() {
                         )}
                       />
                     ))}
-                  </div>
+                  </section>
 
-                  {/* Offer Period - 2 Columns */}
-                  <div>
+                  {/* ===== Offer Period ===== */}
+                  <section>
                     <div className="flex items-center gap-2 mb-4">
                       <Calendar className="h-5 w-5 text-primary" />
                       <h2 className="text-lg font-semibold text-foreground">
                         Offer Period
                       </h2>
                     </div>
-                    <div className="grid gap-6 md:grid-cols-2">
+                    <div className="grid gap-6 grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(280px,1fr))]">
                       {["offer_start_date", "offer_end_date"].map((name) => (
                         <FormField
                           key={name}
@@ -1313,10 +1315,10 @@ export default function FlyerProducts() {
                         />
                       ))}
                     </div>
-                  </div>
+                  </section>
 
-                  {/* Buttons */}
-                  <div className="flex justify-end gap-4 pt-6 border-t">
+                  {/* ===== Buttons ===== */}
+                  <div className="flex flex-col sm:flex-row justify-end gap-4 pt-6 border-t">
                     <Button
                       type="button"
                       variant="outline"
