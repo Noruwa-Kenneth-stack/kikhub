@@ -170,7 +170,7 @@ export default function Navbar() {
                       <p className="text-sm text-gray-500">{user?.role}</p>
                     </div>
                   </div>
-                  <Button variant="outline" onClick={logout} className="w-full text-white">
+                  <Button variant="outline" onClick={logout} className="w-full text-black">
                     Log out
                   </Button>
                 </div>
