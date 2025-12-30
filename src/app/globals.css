@@ -252,3 +252,38 @@ body {
     max-width: 1400px;
   }
 }
+
+@media (max-width: 1126px) {
+  .stack-delete {
+    flex-basis: 100%;
+  }
+}
+
+@media (max-width: 962px) {
+  .stack-remove {
+    flex-basis: 100%;
+  }
+}
+
+@media (max-width: 440px) {
+  .mobile-stack {
+   
+    text-align: center;
+  }
+
+  .mobile-header {
+    height: 5rem;
+  }
+ 
+  .mobile-title {
+    font-size: 1rem; /* text-lg */
+  }
+
+  .mobile-sub {
+    font-size: 0.70rem;
+  }
+}
+
+label {
+  color: #2563eb; /* Tailwind blue-600 */
+}

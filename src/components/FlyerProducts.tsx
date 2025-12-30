@@ -830,7 +830,7 @@ export default function FlyerProducts() {
                               </Select>
                             </FormControl>
 
-                            <div className="flex gap-2 mt-2">
+                            <div className="flex flex-wrap gap-2 mt-2 ">
                               <Button
                                 variant="outline"
                                 size="sm"
@@ -839,32 +839,34 @@ export default function FlyerProducts() {
                               >
                                 + Add Compare Key
                               </Button>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                type="button"
-                                onClick={() => field.onChange([])}
-                              >
-                                Remove Selection
-                              </Button>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                type="button"
-                                onClick={() => {
-                                  if (
-                                    Array.isArray(field.value) &&
-                                    field.value[0]
-                                  ) {
-                                    removeCompareKey(field.value[0]); // remove from localStorage
-                                    field.onChange([]); // clear selection in the form
-                                  }
-                                }}
-                              >
-                                Delete Key
-                              </Button>
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  type="button"
+                                  onClick={() => field.onChange([])}
+                                >
+                                  Remove Selection
+                                </Button>
+                                <Button
+                                 className="stack-delete"
+                                  variant="outline"
+                                  size="sm"
+                                  type="button"
+                                  onClick={() => {
+                                    if (
+                                      Array.isArray(field.value) &&
+                                      field.value[0]
+                                    ) {
+                                      removeCompareKey(field.value[0]); // remove from localStorage
+                                      field.onChange([]); // clear selection in the form
+                                    }
+                                  }}
+                                >
+                                  Delete Key
+                                </Button>
+                              </div>
                             </div>
-
                             <FormMessage />
                           </FormItem>
                         )}
@@ -966,7 +968,7 @@ export default function FlyerProducts() {
                               type="button"
                               onClick={() => setOpenCatDialog(true)}
                             >
-                              + Add Category
+                              + Add Main Category
                             </Button>
 
                             <FormMessage />
@@ -1047,7 +1049,7 @@ export default function FlyerProducts() {
                               </Select>
                             </FormControl>
 
-                            <div className="flex gap-2 mt-2">
+                            <div className="flex flex-wrap gap-2 mt-2">
                               <Button
                                 type="button"
                                 variant="outline"
@@ -1058,6 +1060,7 @@ export default function FlyerProducts() {
                               </Button>
 
                               <Button
+                               className="stack-remove"
                                 type="button"
                                 variant="outline"
                                 size="sm"
@@ -1139,7 +1142,7 @@ export default function FlyerProducts() {
                               </Select>
                             </FormControl>
 
-                            <div className="flex gap-2 mt-2">
+                            <div className="flex flex-wrap gap-2 mt-2">
                               <Button
                                 type="button"
                                 variant="outline"
@@ -1150,6 +1153,7 @@ export default function FlyerProducts() {
                               </Button>
 
                               <Button
+                               className="stack-remove"
                                 type="button"
                                 variant="outline"
                                 size="sm"

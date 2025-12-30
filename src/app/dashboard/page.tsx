@@ -29,7 +29,7 @@ import StoreAds from "@/components/StoreAds";
 import Edit from "@/components/Edit";
 import type { Tab } from "@/types/dashboard";
 import { eventBus } from "@/utils/eventBus";
-import DashboardPageWrapper from "@/components/DashboardPageWrapper";
+// import DashboardPageWrapper from "@/components/DashboardPageWrapper";
 
 // Map of tabs
 const tabConfig: Record<
@@ -94,22 +94,22 @@ export default function DashboardPage() {
   }, [handler]);
 
   return (
-      <DashboardPageWrapper>
+      // <DashboardPageWrapper>
     <SidebarProvider defaultOpen={true}>
       <AppSidebar activeTab={activeTab} onTabChange={setActiveTab} />
 
       <SidebarInset>
-        <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-white px-6 container">
+        <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-white px-6 container mobile-header">
           <SidebarTrigger />
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
-              <Icon className="h-5 w-5 text-primary-foreground" />
+          <div className="flex items-center gap-3 mobile-stack">
+            <div className="flex h-10 w-10 max-[400px]:h-8 max-[400px]:w-8 items-center justify-center rounded-lg bg-primary">
+              <Icon className="h-5 w-5 text-primary-foreground max-[400px]:h-4 max-[400px]:w-4" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-black">
+              <h1 className="text-xl font-bold text-black mobile-title">
                 {tabConfig[activeTab].title} Management
               </h1>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground mobile-sub">
                 Add and manage your {tabConfig[activeTab].title.toLowerCase()}
               </p>
             </div>
@@ -121,6 +121,6 @@ export default function DashboardPage() {
         </main>
       </SidebarInset>
     </SidebarProvider>
-    </DashboardPageWrapper>
+    // </DashboardPageWrapper>
   );
 }
