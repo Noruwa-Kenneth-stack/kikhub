@@ -49,6 +49,10 @@ export default function FlyerProductsTable({
   const [search, setSearch] = useState("");
   const [enableAutoRefresh, setEnableAutoRefresh] = useState(false);
   const [refreshInterval, setRefreshInterval] = useState<number | undefined>();
+  const [editingCell, setEditingCell] = useState<{
+    id: number;
+    key: string;
+  } | null>(null);
 
   const setWidth = (key: string, value: number) =>
     setColWidths((prev) => ({ ...prev, [key]: value }));
@@ -260,144 +264,182 @@ export default function FlyerProductsTable({
     hover:bg-muted
     dark:hover:bg-accent/10"
               >
-{headers.map((h) => (
-  <td
-    key={h.key}
-    className="border align-top px-1 py-[2px] text-foreground dark:border-border"
-    style={{ width: colWidths[h.key] }}
-  >
-    {h.key === "actions" ? (
-      editingId === p.id ? (
-        <>
-          <Button
-            className="h-6 px-2 text-xs"
-            onClick={() => saveProduct(p.id)}
-          >
-            <Save className="h-3 w-3 mr-1" />
-          </Button>
-          <Button
-            className="h-6 px-2 text-xs ml-1"
-            variant="destructive"
-            onClick={() => {
-              setEditingId(null);
-              setForm({});
-            }}
-          >
-            <X className="h-3 w-3 mr-1" />
-          </Button>
-        </>
-      ) : (
-        <>
-          <Button
-            className="h-6 px-2 text-xs"
-            onClick={() => {
-              setEditingId(p.id);
-              setForm(p);
-            }}
-          >
-            <Pencil className="h-3 w-3" />
-          </Button>
-          <Button
-            className="h-6 px-2 text-xs ml-1"
-            variant="destructive"
-            onClick={() => deleteProduct(p.id)}
-          >
-            <Trash2 className="h-3 w-3" />
-          </Button>
-        </>
-      )
-    ) : editingId === p.id ? (
-      <div
-        className="cursor-text"
-        onClick={(e) => e.stopPropagation()} // prevent row click when editing
-      >
-        <Input
-          autoFocus
-          value={
-            h.key === "brands" ||
-            h.key === "weight" ||
-            h.key === "image_thumbnails"
-              ? Array.isArray(form[h.key as keyof EditableFlyerProduct])
-                ? (form[h.key as keyof EditableFlyerProduct] as string[]).join(", ")
-                : Array.isArray(p[h.key as keyof FlyerProduct])
-                ? (p[h.key as keyof FlyerProduct] as string[]).join(", ")
-                : ""
-              : h.key === "offer_start_date" || h.key === "offer_end_date"
-              ? (form[h.key as keyof EditableFlyerProduct] as string | undefined) ??
-                (p[h.key as keyof FlyerProduct]
-                  ? String(p[h.key as keyof FlyerProduct]).slice(0, 16)
-                  : "")
-              : form[h.key as keyof EditableFlyerProduct] ??
-                p[h.key as keyof FlyerProduct] ??
-                ""
-          }
-          type={
-            ["price", "discounted_price", "store_id", "item_id"].includes(h.key)
-              ? "number"
-              : h.key.includes("date")
-              ? "datetime-local"
-              : "text"
-          }
-          onChange={(e) => {
-            const val = e.target.value;
-            if (
-              h.key === "brands" ||
-              h.key === "weight" ||
-              h.key === "image_thumbnails"
-            ) {
-              setForm({
-                ...form,
-                [h.key]: val
-                  .split(",")
-                  .map((v) => v.trim())
-                  .filter(Boolean),
-              });
-            } else if (
-              ["price", "discounted_price", "store_id", "item_id"].includes(h.key)
-            ) {
-              setForm({
-                ...form,
-                [h.key]: val ? Number(val) : undefined,
-              });
-            } else {
-              setForm({ ...form, [h.key]: val || undefined });
-            }
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              saveProduct(p.id);
-            } else if (e.key === "Escape") {
-              setEditingId(null);
-              setForm({});
-            }
-          }}
-          className="h-7 text-xs"
-        />
-      </div>
-    ) : (
-   <div
-    className="cursor-pointer min-h-7 flex items-center w-full h-full"
-    onClick={(e) => {
-      e.stopPropagation();
-      setEditingId(p.id);
-      setForm(p);
-      // Focus this specific cell after state update
-      setTimeout(() => {
-        const input = e.currentTarget.closest('td')?.querySelector('input');
-        input?.focus();
-        input?.select();
-      }, 0);
-    }}
-  >
-    {h.key === "brands" ||
-    h.key === "weight" ||
-    h.key === "image_thumbnails"
-      ? (p[h.key as keyof FlyerProduct] as string[])?.join(", ") ?? ""
-      : String(p[h.key as keyof FlyerProduct] ?? "")}
-  </div>
-    )}
-  </td>
-))}
+                {headers.map((h) => (
+                  <td
+                    key={h.key}
+                    className="border align-top px-1 py-[2px] text-foreground dark:border-border"
+                    style={{ width: colWidths[h.key] }}
+                  >
+                    {h.key === "actions" ? (
+                      editingCell?.id === p.id && editingCell?.key === h.key ? (
+                        <>
+                          <Button
+                            className="h-6 px-2 text-xs"
+                            onClick={() => saveProduct(p.id)}
+                          >
+                            <Save className="h-3 w-3 mr-1" />
+                          </Button>
+                          <Button
+                            className="h-6 px-2 text-xs ml-1"
+                            variant="destructive"
+                            onClick={() => {
+                              setEditingId(null);
+                              setForm({});
+                            }}
+                          >
+                            <X className="h-3 w-3 mr-1" />
+                          </Button>
+                        </>
+                      ) : (
+                        <>
+                          <Button
+                            className="h-6 px-2 text-xs"
+                            onClick={() => {
+                              setEditingId(p.id);
+                              setForm(p);
+                            }}
+                          >
+                            <Pencil className="h-3 w-3" />
+                          </Button>
+                          <Button
+                            className="h-6 px-2 text-xs ml-1"
+                            variant="destructive"
+                            onClick={() => deleteProduct(p.id)}
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
+                        </>
+                      )
+                    ) : editingCell?.id === p.id &&
+                      editingCell?.key === h.key ? (
+                      <div
+                        className="cursor-text"
+                        onClick={(e) => e.stopPropagation()} // prevent row click when editing
+                      >
+                        <Input
+                          value={
+                            h.key === "brands" ||
+                            h.key === "weight" ||
+                            h.key === "image_thumbnails"
+                              ? Array.isArray(
+                                  form[h.key as keyof EditableFlyerProduct]
+                                )
+                                ? (
+                                    form[
+                                      h.key as keyof EditableFlyerProduct
+                                    ] as string[]
+                                  ).join(", ")
+                                : Array.isArray(p[h.key as keyof FlyerProduct])
+                                ? (
+                                    p[h.key as keyof FlyerProduct] as string[]
+                                  ).join(", ")
+                                : ""
+                              : h.key === "offer_start_date" ||
+                                h.key === "offer_end_date"
+                              ? (form[h.key as keyof EditableFlyerProduct] as
+                                  | string
+                                  | undefined) ??
+                                (p[h.key as keyof FlyerProduct]
+                                  ? String(
+                                      p[h.key as keyof FlyerProduct]
+                                    ).slice(0, 16)
+                                  : "")
+                              : form[h.key as keyof EditableFlyerProduct] ??
+                                p[h.key as keyof FlyerProduct] ??
+                                ""
+                          }
+                          type={
+                            [
+                              "price",
+                              "discounted_price",
+                              "store_id",
+                              "item_id",
+                            ].includes(h.key)
+                              ? "number"
+                              : h.key.includes("date")
+                              ? "datetime-local"
+                              : "text"
+                          }
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            if (
+                              h.key === "brands" ||
+                              h.key === "weight" ||
+                              h.key === "image_thumbnails"
+                            ) {
+                              setForm({
+                                ...form,
+                                [h.key]: val
+                                  .split(",")
+                                  .map((v) => v.trim())
+                                  .filter(Boolean),
+                              });
+                            } else if (
+                              [
+                                "price",
+                                "discounted_price",
+                                "store_id",
+                                "item_id",
+                              ].includes(h.key)
+                            ) {
+                              setForm({
+                                ...form,
+                                [h.key]: val ? Number(val) : undefined,
+                              });
+                            } else {
+                              setForm({ ...form, [h.key]: val || undefined });
+                            }
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              saveProduct(p.id);
+                              setEditingCell(null);
+                            } else if (e.key === "Escape") {
+                              setEditingId(null);
+                              setEditingCell(null);
+                              setForm({});
+                            }
+                          }}
+                          className="h-7 text-xs"
+                        />
+                      </div>
+                    ) : (
+                      <div
+                        className="cursor-pointer min-h-7 flex items-center w-full h-full"
+                        onClick={(e) => {
+                          e.stopPropagation();
+
+                          setEditingId(p.id);
+                          setEditingCell({ id: p.id, key: h.key });
+
+                          setForm((prev) => ({
+                            ...p,
+                            ...prev,
+                          }));
+
+                          requestAnimationFrame(() => {
+                            const input = e.currentTarget
+                              .closest("td")
+                              ?.querySelector(
+                                "input"
+                              ) as HTMLInputElement | null;
+
+                            input?.focus();
+                            input?.select();
+                          });
+                        }}
+                      >
+                        {h.key === "brands" ||
+                        h.key === "weight" ||
+                        h.key === "image_thumbnails"
+                          ? (p[h.key as keyof FlyerProduct] as string[])?.join(
+                              ", "
+                            ) ?? ""
+                          : String(p[h.key as keyof FlyerProduct] ?? "")}
+                      </div>
+                    )}
+                  </td>
+                ))}
               </tr>
             ))}
           </tbody>
