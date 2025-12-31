@@ -375,19 +375,26 @@ export default function FlyerProductsTable({
         />
       </div>
     ) : (
-      <div
-        className="cursor-pointer min-h-7 flex items-center"
-        onClick={() => {
-          setEditingId(p.id);
-          setForm(p);
-        }}
-      >
-        {h.key === "brands" ||
-        h.key === "weight" ||
-        h.key === "image_thumbnails"
-          ? (p[h.key as keyof FlyerProduct] as string[])?.join(", ") ?? ""
-          : String(p[h.key as keyof FlyerProduct] ?? "")}
-      </div>
+   <div
+    className="cursor-pointer min-h-7 flex items-center w-full h-full"
+    onClick={(e) => {
+      e.stopPropagation();
+      setEditingId(p.id);
+      setForm(p);
+      // Focus this specific cell after state update
+      setTimeout(() => {
+        const input = e.currentTarget.closest('td')?.querySelector('input');
+        input?.focus();
+        input?.select();
+      }, 0);
+    }}
+  >
+    {h.key === "brands" ||
+    h.key === "weight" ||
+    h.key === "image_thumbnails"
+      ? (p[h.key as keyof FlyerProduct] as string[])?.join(", ") ?? ""
+      : String(p[h.key as keyof FlyerProduct] ?? "")}
+  </div>
     )}
   </td>
 ))}
