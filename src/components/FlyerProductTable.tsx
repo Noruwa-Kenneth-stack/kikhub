@@ -48,89 +48,80 @@ export default function FlyerProductsTable({
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [enableAutoRefresh, setEnableAutoRefresh] = useState(false);
-const [refreshInterval, setRefreshInterval] = useState<number | undefined>();
-
+  const [refreshInterval, setRefreshInterval] = useState<number | undefined>();
 
   const setWidth = (key: string, value: number) =>
     setColWidths((prev) => ({ ...prev, [key]: value }));
 
   // Load all products
-const loadProducts = useCallback(async () => {
-  try {
-    const res = await fetch(
-      `/api/flyer_products_edit?page=${page}&limit=${itemsPerPage}&search=${search}`
-    );
-    if (!res.ok) throw new Error("Failed to load products");
+  const loadProducts = useCallback(async () => {
+    try {
+      const res = await fetch(
+        `/api/flyer_products_edit?page=${page}&limit=${itemsPerPage}&search=${search}`
+      );
+      if (!res.ok) throw new Error("Failed to load products");
 
-    const data = await res.json();
+      const data = await res.json();
 
-    // After API change, data has { items, total }
-    setProducts(data.items); // <- must be data.items
-    setTotalCount(data.total);
-  } catch (err) {
-    console.error(err);
-    toast({ title: "Error", description: "Could not load products" });
-  }
-}, [page, search, itemsPerPage]);
-
-
+      // After API change, data has { items, total }
+      setProducts(data.items); // <- must be data.items
+      setTotalCount(data.total);
+    } catch (err) {
+      console.error(err);
+      toast({ title: "Error", description: "Could not load products" });
+    }
+  }, [page, search, itemsPerPage]);
 
   useEffect(() => {
     loadProducts();
   }, [loadProducts]); // ✅ safe
 
-// =============================
-// LOAD AUTO-REFRESH SETTINGS
-// =============================
-useEffect(() => {
-try {
-const settings = JSON.parse(localStorage.getItem("appSettings") || "{}");
-setEnableAutoRefresh(settings.enableAutoRefresh ?? false);
-setRefreshInterval(settings.refreshInterval);
-} catch (e) {
-console.error("Failed to load auto-refresh settings", e);
-}
-}, []);
+  // =============================
+  // LOAD AUTO-REFRESH SETTINGS
+  // =============================
+  useEffect(() => {
+    try {
+      const settings = JSON.parse(localStorage.getItem("appSettings") || "{}");
+      setEnableAutoRefresh(settings.enableAutoRefresh ?? false);
+      setRefreshInterval(settings.refreshInterval);
+    } catch (e) {
+      console.error("Failed to load auto-refresh settings", e);
+    }
+  }, []);
 
+  // =============================
+  // LIVE SETTINGS UPDATES (eventBus)
+  // =============================
+  useEffect(() => {
+    const handler = (settings: {
+      enableAutoRefresh?: boolean;
+      refreshInterval?: number;
+    }) => {
+      if (typeof settings.enableAutoRefresh === "boolean") {
+        setEnableAutoRefresh(settings.enableAutoRefresh);
+      }
+      if (typeof settings.refreshInterval === "number") {
+        setRefreshInterval(settings.refreshInterval);
+      }
+    };
 
-// =============================
-// LIVE SETTINGS UPDATES (eventBus)
-// =============================
-useEffect(() => {
-const handler = (settings: {
-enableAutoRefresh?: boolean;
-refreshInterval?: number;
-}) => {
-if (typeof settings.enableAutoRefresh === "boolean") {
-setEnableAutoRefresh(settings.enableAutoRefresh);
-}
-if (typeof settings.refreshInterval === "number") {
-setRefreshInterval(settings.refreshInterval);
-}
-};
+    eventBus.on("settingsUpdated", handler);
+    return () => eventBus.off("settingsUpdated", handler);
+  }, []);
 
+  // =============================
+  // AUTO REFRESH (PAUSE WHILE EDITING)
+  // =============================
+  useEffect(() => {
+    if (editingId !== null) return;
+    if (!enableAutoRefresh || !refreshInterval) return;
 
-eventBus.on("settingsUpdated", handler);
-return () => eventBus.off("settingsUpdated", handler);
-}, []);
+    const interval = setInterval(() => {
+      loadProducts();
+    }, refreshInterval * 1000);
 
-
-// =============================
-// AUTO REFRESH (PAUSE WHILE EDITING)
-// =============================
-useEffect(() => {
-if (editingId !== null) return;
-if (!enableAutoRefresh || !refreshInterval) return;
-
-
-const interval = setInterval(() => {
-loadProducts();
-}, refreshInterval * 1000);
-
-
-return () => clearInterval(interval);
-}, [editingId, enableAutoRefresh, refreshInterval, loadProducts]);
-
+    return () => clearInterval(interval);
+  }, [editingId, enableAutoRefresh, refreshInterval, loadProducts]);
 
   // Save product update
   const saveProduct = async (id: number) => {
@@ -230,19 +221,26 @@ return () => clearInterval(interval);
         />
       </div>
       <div className="w-full overflow-x-auto max-w-full">
-        <table className="w-max border-collapse border text-xs table-auto 
+        <table
+          className="w-max border-collapse border text-xs table-auto 
   bg-white dark:bg-card
-  text-black">
-          <thead className=" bg-gray-50
+  text-black"
+        >
+          <thead
+            className=" bg-gray-50
   dark:bg-muted
-  text-xs">
+  text-xs"
+          >
             <tr>
               {headers.map((h) => (
-                <th key={h.key} className="border px-3 py-3   border
+                <th
+                  key={h.key}
+                  className="border px-3 py-3   border
     font-semibold
     whitespace-nowrap
     text-foreground
-    dark:border-border">
+    dark:border-border"
+                >
                   <ResizableColumn
                     width={colWidths[h.key]}
                     onResize={(w) => setWidth(h.key, w)}
@@ -255,147 +253,144 @@ return () => clearInterval(interval);
           </thead>
           <tbody>
             {products.map((p) => (
-              <tr key={p.id} className=" odd:bg-gray-50
+              <tr
+                key={p.id}
+                className=" odd:bg-gray-50
     dark:odd:bg-muted
     hover:bg-muted
-    dark:hover:bg-accent/10">
-                {headers.map((h) => (
-                  <td
-                    key={h.key}
-                    className="border align-top  border
-  px-1 py-[2px]
-  text-foreground
-  dark:border-border"
-                    style={{ width: colWidths[h.key] }}
-                  >
-                    {h.key === "actions" ? (
-                      editingId === p.id ? (
-                        <>
-                          <Button
-                            className="h-6 px-2 text-xs"
-                            onClick={() => saveProduct(p.id)}
-                          >
-                           <Save className="h-3 w-3 mr-1" />
-                          </Button>
-                          <Button
-                            className="h-6 px-2 text-xs ml-1"
-                            variant="destructive"
-                            onClick={() => {
-                              setEditingId(null);
-                              setForm({});
-                            }}
-                          >
-                            <X className="h-3 w-3 mr-1" />
-                          </Button>
-                        </>
-                      ) : (
-                        <>
-                          <Button
-                            className="h-6 px-2 text-xs"
-                            onClick={() => {
-                              setEditingId(p.id);
-                              setForm(p);
-                            }}
-                          >
-                           <Pencil className="h-3 w-3" />
-                          </Button>
-                          <Button
-                            className="h-6 px-2 text-xs ml-1"
-                            variant="destructive"
-                            onClick={() => deleteProduct(p.id)}
-                          >
-                            <Trash2 className="h-3 w-3" />
-                          </Button>
-                        </>
-                      )
-                    ) : editingId === p.id ? (
-                      <Input
-                        value={
-                          h.key === "brands" ||
-                          h.key === "weight" ||
-                          h.key === "image_thumbnails"
-                            ? Array.isArray(
-                                form[h.key as keyof EditableFlyerProduct]
-                              )
-                              ? (
-                                  form[
-                                    h.key as keyof EditableFlyerProduct
-                                  ] as string[]
-                                ).join(", ")
-                              : Array.isArray(p[h.key as keyof FlyerProduct])
-                              ? (
-                                  p[h.key as keyof FlyerProduct] as string[]
-                                ).join(", ")
-                              : ""
-                            : h.key === "offer_start_date" ||
-                              h.key === "offer_end_date"
-                            ? (form[h.key as keyof EditableFlyerProduct] as
-                                | string
-                                | undefined) ??
-                              (p[h.key as keyof FlyerProduct]
-                                ? String(p[h.key as keyof FlyerProduct]).slice(
-                                    0,
-                                    16
-                                  )
-                                : "")
-                            : form[h.key as keyof EditableFlyerProduct] ??
-                              p[h.key as keyof FlyerProduct] ??
-                              ""
-                        }
-                        type={
-                          [
-                            "price",
-                            "discounted_price",
-                            "store_id",
-                            "item_id",
-                          ].includes(h.key)
-                            ? "number"
-                            : h.key.includes("date")
-                            ? "datetime-local"
-                            : "text"
-                        }
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          if (
-                            h.key === "brands" ||
-                            h.key === "weight" ||
-                            h.key === "image_thumbnails"
-                          ) {
-                            setForm({
-                              ...form,
-                              [h.key]: val
-                                .split(",")
-                                .map((v) => v.trim())
-                                .filter(Boolean),
-                            });
-                          } else if (
-                            [
-                              "price",
-                              "discounted_price",
-                              "store_id",
-                              "item_id",
-                            ].includes(h.key)
-                          ) {
-                            setForm({
-                              ...form,
-                              [h.key]: val ? Number(val) : undefined,
-                            });
-                          } else {
-                            setForm({ ...form, [h.key]: val || undefined });
-                          }
-                        }}
-                      />
-                    ) : h.key === "brands" ||
-                      h.key === "weight" ||
-                      h.key === "image_thumbnails" ? (
-                      (p[h.key as keyof FlyerProduct] as string[])?.join(
-                        ", "
-                      ) ?? ""
-                    ) : (
-                      String(p[h.key as keyof FlyerProduct] ?? "")
-                    )}
-                  </td>
-                ))}
+    dark:hover:bg-accent/10"
+              >
+{headers.map((h) => (
+  <td
+    key={h.key}
+    className="border align-top px-1 py-[2px] text-foreground dark:border-border"
+    style={{ width: colWidths[h.key] }}
+  >
+    {h.key === "actions" ? (
+      editingId === p.id ? (
+        <>
+          <Button
+            className="h-6 px-2 text-xs"
+            onClick={() => saveProduct(p.id)}
+          >
+            <Save className="h-3 w-3 mr-1" />
+          </Button>
+          <Button
+            className="h-6 px-2 text-xs ml-1"
+            variant="destructive"
+            onClick={() => {
+              setEditingId(null);
+              setForm({});
+            }}
+          >
+            <X className="h-3 w-3 mr-1" />
+          </Button>
+        </>
+      ) : (
+        <>
+          <Button
+            className="h-6 px-2 text-xs"
+            onClick={() => {
+              setEditingId(p.id);
+              setForm(p);
+            }}
+          >
+            <Pencil className="h-3 w-3" />
+          </Button>
+          <Button
+            className="h-6 px-2 text-xs ml-1"
+            variant="destructive"
+            onClick={() => deleteProduct(p.id)}
+          >
+            <Trash2 className="h-3 w-3" />
+          </Button>
+        </>
+      )
+    ) : editingId === p.id ? (
+      <div
+        className="cursor-text"
+        onClick={(e) => e.stopPropagation()} // prevent row click when editing
+      >
+        <Input
+          autoFocus
+          value={
+            h.key === "brands" ||
+            h.key === "weight" ||
+            h.key === "image_thumbnails"
+              ? Array.isArray(form[h.key as keyof EditableFlyerProduct])
+                ? (form[h.key as keyof EditableFlyerProduct] as string[]).join(", ")
+                : Array.isArray(p[h.key as keyof FlyerProduct])
+                ? (p[h.key as keyof FlyerProduct] as string[]).join(", ")
+                : ""
+              : h.key === "offer_start_date" || h.key === "offer_end_date"
+              ? (form[h.key as keyof EditableFlyerProduct] as string | undefined) ??
+                (p[h.key as keyof FlyerProduct]
+                  ? String(p[h.key as keyof FlyerProduct]).slice(0, 16)
+                  : "")
+              : form[h.key as keyof EditableFlyerProduct] ??
+                p[h.key as keyof FlyerProduct] ??
+                ""
+          }
+          type={
+            ["price", "discounted_price", "store_id", "item_id"].includes(h.key)
+              ? "number"
+              : h.key.includes("date")
+              ? "datetime-local"
+              : "text"
+          }
+          onChange={(e) => {
+            const val = e.target.value;
+            if (
+              h.key === "brands" ||
+              h.key === "weight" ||
+              h.key === "image_thumbnails"
+            ) {
+              setForm({
+                ...form,
+                [h.key]: val
+                  .split(",")
+                  .map((v) => v.trim())
+                  .filter(Boolean),
+              });
+            } else if (
+              ["price", "discounted_price", "store_id", "item_id"].includes(h.key)
+            ) {
+              setForm({
+                ...form,
+                [h.key]: val ? Number(val) : undefined,
+              });
+            } else {
+              setForm({ ...form, [h.key]: val || undefined });
+            }
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              saveProduct(p.id);
+            } else if (e.key === "Escape") {
+              setEditingId(null);
+              setForm({});
+            }
+          }}
+          className="h-7 text-xs"
+        />
+      </div>
+    ) : (
+      <div
+        className="cursor-pointer min-h-7 flex items-center"
+        onClick={() => {
+          setEditingId(p.id);
+          setForm(p);
+        }}
+      >
+        {h.key === "brands" ||
+        h.key === "weight" ||
+        h.key === "image_thumbnails"
+          ? (p[h.key as keyof FlyerProduct] as string[])?.join(", ") ?? ""
+          : String(p[h.key as keyof FlyerProduct] ?? "")}
+      </div>
+    )}
+  </td>
+))}
               </tr>
             ))}
           </tbody>
