@@ -80,7 +80,7 @@ export default function Edit() {
       imageOptimization: true,
       autosaveInterval: 100,
       enableAutoRefresh: true,
-      refreshInterval: 15,
+      refreshInterval: 600,
     };
   };
 
@@ -290,41 +290,6 @@ export default function Edit() {
                                 </Select>
                                 <FormDescription>
                                   Choose how the dashboard looks
-                                </FormDescription>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-
-                          {/* 4. Auto-save Interval */}
-                          <FormField
-                            control={generalForm.control}
-                            name="autosaveInterval"
-                            render={({ field }) => (
-                              <FormItem className="mt-4">
-                                <FormLabel>
-                                  Auto-save Interval (seconds)
-                                </FormLabel>
-                                <FormControl>
-                                  <Input
-                                    type="number"
-                                    min={100}
-                                    max={10000}
-                                    step={100}
-                                    placeholder="e.g. 60"
-                                    {...field}
-                                    onChange={(e) =>
-                                      field.onChange(
-                                        e.target.value === ""
-                                          ? undefined
-                                          :  Number(e.target.value)
-                                      )
-                                    }
-                                  />
-                                </FormControl>
-                                <FormDescription>
-                                  Automatically save drafts every X seconds
-                                  (100–10000)
                                 </FormDescription>
                                 <FormMessage />
                               </FormItem>
